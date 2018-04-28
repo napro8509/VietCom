@@ -17,6 +17,7 @@ export default class Accountant extends Component {
                     backgroundColor='#005391'
                     barStyle='light-content'
                     />
+
                 <HeaderWait />
                 <View style={styles.body}>
                     <View style={styles.cartInfo}>
@@ -25,7 +26,7 @@ export default class Accountant extends Component {
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text>Tổng tiền: </Text><Text style={{ color: 'blue', fontSize: 17 }}>15.000.000 đ</Text>
-                        </View>
+                        </View> 
                     </View>
                     <View style={{ flexDirection: 'row',  height: 40,borderBottomWidth:1,borderBottomColor:'gray',backgroundColor:'#DFDFDF'}}>
                         <View style={{ flex: 1, marginLeft: 10,flexDirection:'row' }}>

@@ -3,12 +3,10 @@ package com.vietcom;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.BV.LinearGradient.LinearGradientPackage; // <--- This!
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,9 +22,7 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new VectorIconsPackage(),
-              new LinearGradientPackage()
+          new MainReactPackage()
       );
     }
 
@@ -46,6 +42,4 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
   }
-
 }
-

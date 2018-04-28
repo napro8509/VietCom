@@ -4,11 +4,21 @@ import {
   Text,
   View,
   Dimensions,
-  Image
+  Image,
+  DatePickerAndroid,
+  TouchableOpacticy,
 } from 'react-native';
+import DatePicker from 'react-native-datepicker';
 const {height,width}=Dimensions.get('window');
 const headerBar=height/5;
 export default class HeaderWait extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      fromDate:"1-2-2017",
+      toDate:"2-2-2017"
+    }
+  } 
   render() {
     return (
     <View style={{height:headerBar,paddingHorizontal:10,backgroundColor:'#005391'}}>
@@ -52,23 +62,70 @@ export default class HeaderWait extends Component {
       <View style={styles.formCalendar}>
         <View>
         <Text style={styles.text}>Từ ngày</Text>
-        <View style={styles.calendarContainer}>
-            <Text style={{margin:5,color:'#FFF',fontSize:17}}>01/03/2018</Text>
-            <Image style={styles.calenderIcon}
-                source={require('../../src/icon/calendar.png')}
-                resizeMode='contain'>
-            </Image>
+        <DatePicker
+        style={styles.calendarContainer}
+        date={this.state.fromDate}
+        mode="date"
+        placeholder="select date"
+        format="DD-MM-YYYY"
+        minDate="01-05-2016"
+        maxDate="02-02-2019"
+        confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+        customStyles={{
+          dateIcon: {
+            position: 'absolute',
+            right: 0,
+            top: 4,
+            marginLeft: 0
+
+          },
+          dateInput: {
+            alignItems:'flex-start'
+          },
+          dateText:{
+            marginLeft:10,
+            color:'white',
+            textAlign:'left'
+          }
+          // ... You can check the source to find the other keys.
+        }}
+        onDateChange={(date) => {this.setState({fromDate: date})}}
+      />
         </View>
-        </View>
+        
         <View >
         <Text style={styles.text}>Đến ngày</Text>
-        <View style={styles.calendarContainer}>
-            <Text style={{margin:5,color:'#FFF',fontSize:17}}>01/03/2018</Text>
-            <Image style={styles.calenderIcon}
-                source={require('../../src/icon/calendar.png')}
-                resizeMode='contain'>
-            </Image>
-        </View>
+        <DatePicker
+        style={styles.calendarContainer}
+        date={this.state.toDate}
+        mode="date"
+        placeholder="select date"
+        format="DD-MM-YYYY"
+        minDate="01-06-2018"
+        maxDate="04-03-2020"
+        confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+        customStyles={{
+          dateIcon: {
+            position: 'absolute',
+            right: 0,
+            top: 4,
+            marginLeft: 0
+
+          },
+          dateInput: {
+            alignItems:'flex-start'
+          },
+          dateText:{
+            marginLeft:10,
+            color:'white',
+            textAlign:'left'
+          }
+          // ... You can check the source to find the other keys.
+        }}
+        onDateChange={(date) => {this.setState({toDate: date})}}
+      />
         </View>
       </View>
     </View>
@@ -117,13 +174,10 @@ const styles = StyleSheet.create({
     calendarContainer:{
         marginTop:5,
         height:height/16,
-        width:width/2-20,
+        width:width/2-50,
         borderColor:'#DFDFDF',
         borderWidth:1,
-        flexDirection:'row',
-        justifyContent:'space-around',
-        alignItems:'center'
-
+        borderRadius:5
     },
     calenderIcon:{
         height:height/22,

@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import Header from './Components/Header/Header';
 import Body from './Components/Body/Body'
-import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class App extends Component {  
   render() {
