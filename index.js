@@ -5,4 +5,6 @@ import HeaderManager from './Components/Header/HeaderManager';
 import FilterComponent from './Components/Header/FilterComponent';
 import HeaderContain from './Components/Header/HeaderContain';
 import ManageRequestScreen from './Components/Screens/ManageRequest/ManageRequestScreen';
-AppRegistry.registerComponent('VietCom', () => ManageRequestScreen);
+import CardDetail from './Components/Screens/ManageRequest/CardDetail';
+import CardEditHistory from './Components/Screens/ManageRequest/CardEditHistory';
+AppRegistry.registerComponent('VietCom', () => CardEditHistory);

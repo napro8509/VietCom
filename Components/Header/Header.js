@@ -4,57 +4,87 @@ import {
   Text,
   View,
   Dimensions,
-  Image
+  Image,
+  DatePickerAndroid,
+  TouchableOpacticy,
 } from 'react-native';
-const {height}=Dimensions.get('window');
-const headerBar=height/20;
+const { height, width } = Dimensions.get('window');
+const headerBar = height / 5;
 export default class Header extends Component {
+
   render() {
     return (
-      <View style={styles.head}>
-        <View style={styles.left}>
-        <Image style={styles.menuicon}
-             source={require('../../src/icon/menu_icon.png')}
-             resizeMode='contain'
-             />
-        </View>
+      <View style={{ height: headerBar/4, paddingHorizontal: 10, backgroundColor: '#005391' }}>
+        <View>
+          <View style={styles.head}>
+            <Image style={styles.menuicon}
+              source={require('../../src/icon/forward.png')}
+              resizeMode='contain'
+            />
 
-        <View style={styles.mid}>
-        <Text style={styles.dashboard}>
-          Dashboard
-          </Text>
+            <View style={styles.mid}>
+              <Text style={styles.dashboard}>
+                Trễ Hạn
+              </Text>
+            </View>
+            <View>
+              <Image style={styles.menuicon}
+                source={require('../../src/icon/bell_icon.png')}
+                resizeMode='contain'
+              />
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  width: '50%',
+                  height: '50%',
+                }}
+              >
+                <View style={{ flex: 1, backgroundColor: 'red', borderRadius: 4, justifyContent: 'center', alignItems: 'center' }}>
+                  <Text style={{ fontSize: 10, color: '#FFF' }}>30</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View style={{ borderBottomWidth: 1, height: 1, borderColor: '#DFDFDF', marginVertical: 10 }}>
+          </View>
         </View>
-
-        <View style={styles.right}>
-        <Image style={styles.menuicon}
-             source={require('../../src/icon/bell_icon.png')}
-             resizeMode='contain'
-             />
         </View>
-      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-    head:{
-        flexDirection:'row',
-        height:headerBar,
-        justifyContent:'space-between',
-        backgroundColor:'#005391',
-        paddingHorizontal:10
-    },
-
-    menuicon:{
-      width:height/20,
-      height:height/20,
-    },
-    mid:{
-      justifyContent:'center',
-    },
-    dashboard:{
-      color:'white',
-      fontSize:20,
-    },
-
+  head: {
+    flexDirection: 'row',
+    height: headerBar / 4,
+    justifyContent: 'space-between',
+    backgroundColor: '#005391',
+    alignItems: 'center'
+  },
+  left: {
+    width: headerBar / 2,
+    height: headerBar / 2,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  menuicon: {
+    width: height / 20,
+    height: height / 20,
+  },
+  mid: {
+    justifyContent: 'center',
+  },
+  dashboard: {
+    color: 'white',
+    fontSize: 17,
+    fontFamily: 'Avevir',
+    fontWeight: 'bold'
+  },
+  right: {
+    width: height / 10,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
 });
