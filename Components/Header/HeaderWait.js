@@ -106,6 +106,7 @@ export default class HeaderWait extends Component {
         maxDate="04-03-2020"
         confirmBtnText="Confirm"
         cancelBtnText="Cancel"
+        androidMode="spinner"
         customStyles={{
           dateIcon: {
             position: 'absolute',

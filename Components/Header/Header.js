@@ -7,7 +7,7 @@ import {
   Image
 } from 'react-native';
 const {height}=Dimensions.get('window');
-const headerBar=height/14;
+const headerBar=height/20;
 export default class Header extends Component {
   render() {
     return (
@@ -41,16 +41,11 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         height:headerBar,
         justifyContent:'space-between',
-        backgroundColor:'#005391'
+        backgroundColor:'#005391',
+        paddingHorizontal:10
     },
-    left:{
-      width:headerBar,
-      height:headerBar,
-      justifyContent:'center',
-      alignItems:'center'
-    },
+
     menuicon:{
-      flex:1,
       width:height/20,
       height:height/20,
     },
@@ -61,9 +56,5 @@ const styles = StyleSheet.create({
       color:'white',
       fontSize:20,
     },
-    right:{
-      width:height/10,
-      justifyContent:'center',
-      alignItems:'center'
-    },
+
 });
