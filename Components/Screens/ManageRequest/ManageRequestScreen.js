@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  TextInput
+    StyleSheet,
+    Text,
+    View,
+    Dimensions,
+    TextInput,
+    Image
 } from 'react-native';
 import { TabNavigator } from 'react-navigation';
 import OverViewScreen from './TabOverView/OverViewScreen';
 import AccountantApproveScreen from './TabAccountantApprove/AccountantApproveScreen';
 
-const Tab= TabNavigator(
+const Tab = TabNavigator(
     {
         OverView: {
             screen: OverViewScreen,
@@ -30,11 +31,11 @@ const Tab= TabNavigator(
             upperCaseLabel: false,
             activeTintColor: '#FFF',
             inactiveTintColor: '#DFDFDF',
-            style:{
-                backgroundColor:'#005391',
+            style: {
+                backgroundColor: '#005391',
             },
-            labelStyle:{
-                fontSize:14
+            labelStyle: {
+                fontSize: 14
             }
         },
         animationEnabled: true,
@@ -42,21 +43,30 @@ const Tab= TabNavigator(
     }
 );
 
-const {height,width}=Dimensions.get('window');
-const headerBar=height/10;
+const { height, width } = Dimensions.get('window');
+const headerBar = height / 10;
 
-export default class ManageRequestScreen extends Component{
-    render(){
-        return(
-            <View style={styles.container}>  
-                <Tab/>
+export default class ManageRequestScreen extends Component {
+    static navigationOptions = {
+        drawerLabel: 'Quản lý phiếu đề nghị',
+        drawerIcon: ({ tintColor }) => (
+            <Image
+                source={require('../../../src/icon/docs.png')}
+                style={[{ width: 20, height: 20 }, { tintColor: tintColor }]}
+            />
+        ),
+    };
+    render() {
+        return (
+            <View style={styles.container}>
+                <Tab />
             </View>
         );
     }
 }
 
-const styles=StyleSheet.create({
-    container:{
-        flex:1,
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
     }
 })

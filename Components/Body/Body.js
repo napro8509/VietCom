@@ -31,16 +31,16 @@ export default class Body extends Component {
                                             height: '100%',
                                         }}
                                         >
-                                        <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
-                                        <Text style={{fontSize:15,color:'#FFF'}}> Số phiếu</Text>
-                                        <Text style={{fontSize:35, color:'#FFF',fontWeight:'700'}}> 45</Text>
+                                        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                                        <Text style={{fontSize:15,color:'#FFF'}}>Số phiếu</Text>
+                                        <Text style={{fontSize:30,color:'#FFF'}}>45</Text>
                                         </View>
                                     </View>
                                 </View>
                                 <View style={styles.content}>
                                     <View style={styles.leftcontent}>
-                                        <Text style={{fontSize:22,margin:5,marginBottom:0,color:'black'}}> Trễ hạn</Text>
-                                        <Text style={{fontSize:30,margin:5, color:'#005391',fontWeight:'700'}}> 480.000.000 đ</Text>
+                                        <Text style={{fontSize:20,margin:5,marginBottom:0,color:'black'}}>Trễ hạn</Text>
+                                        <Text style={{fontSize:25,margin:5, color:'#005391'}}>480.000.000 đ</Text>
                                     </View>
                                     <View style={styles.rightcontent}>
                                     <TouchableOpacity>
@@ -71,16 +71,16 @@ export default class Body extends Component {
                                             height: '100%',
                                         }}
                                         >
-                                        <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
-                                        <Text style={{fontSize:15,color:'#FFF'}}> Số phiếu</Text>
-                                        <Text style={{fontSize:35, color:'#FFF',fontWeight:'700'}}> 45</Text>
+                                        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                                        <Text style={{fontSize:15,color:'#FFF'}}>Số phiếu</Text>
+                                        <Text style={{fontSize:30,color:'#FFF'}}>45</Text>
                                         </View>
                                     </View>
                                 </View>
                                 <View style={styles.content}>
                                     <View style={styles.leftcontent}>
-                                        <Text style={{fontSize:22,margin:5,marginBottom:0,color:'black'}}> Tổng Phải Trả</Text>
-                                        <Text style={{fontSize:30,margin:5, color:'#005391',fontWeight:'700'}}> 650.000.000 đ</Text>
+                                        <Text style={{fontSize:20,margin:5,marginBottom:0,color:'black'}}>Tổng Phải Trả</Text>
+                                        <Text style={{fontSize:25,margin:5, color:'#005391'}}>650.000.000 đ</Text>
                                     </View>
                                     <View style={styles.rightcontent}>
                                     <TouchableOpacity>
@@ -111,16 +111,16 @@ export default class Body extends Component {
                                             height: '100%',
                                         }}
                                         >
-                                        <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
-                                        <Text style={{fontSize:15,color:'#FFF'}}> Số phiếu</Text>
-                                        <Text style={{fontSize:35, color:'#FFF',fontWeight:'700'}}> 23</Text>
+                                        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                                        <Text style={{fontSize:15,color:'#FFF'}}>Số phiếu</Text>
+                                        <Text style={{fontSize:30,color:'#FFF'}}>23</Text>
                                         </View>
                                     </View>
                                 </View>
                                 <View style={styles.content}>
                                     <View style={styles.leftcontent}>
-                                        <Text style={{fontSize:22,margin:5,marginBottom:0,color:'black'}}> Tổng Duyệt Chi</Text>
-                                        <Text style={{fontSize:30,margin:5, color:'#005391',fontWeight:'700'}}> 180.000.000 đ</Text>
+                                        <Text style={{fontSize:20,margin:5,marginBottom:0,color:'black'}}>Tổng Duyệt Chi</Text>
+                                        <Text style={{fontSize:25,margin:5, color:'#005391'}}>180.000.000 đ</Text>
                                     </View>
                                     <View style={styles.rightcontent}>
                                     <Image style={styles.menuicon}
@@ -149,16 +149,16 @@ export default class Body extends Component {
                                             height: '100%',
                                         }}
                                         >
-                                        <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
-                                        <Text style={{fontSize:15,color:'#FFF'}}> Số phiếu</Text>
-                                        <Text style={{fontSize:35, color:'#FFF',fontWeight:'700'}}> 44</Text>
+                                        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                                        <Text style={{fontSize:15,color:'#FFF'}}>Số phiếu</Text>
+                                        <Text style={{fontSize:30,color:'#FFF'}}>44</Text>
                                         </View>
                                     </View>
                                 </View>
                                 <View style={styles.content}>
                                     <View style={styles.leftcontent}>
-                                        <Text style={{fontSize:22,margin:5,marginBottom:0,color:'black'}}> Đã duyệt chi</Text>
-                                        <Text style={{fontSize:30,margin:5, color:'#005391',fontWeight:'700'}}> 340.000.000 đ</Text>
+                                        <Text style={{fontSize:20,margin:5,marginBottom:0,color:'black'}}>Đã duyệt chi</Text>
+                                        <Text style={{fontSize:25,margin:5, color:'#005391'}}>340.000.000 đ</Text>
                                     </View>
                                     <View style={styles.rightcontent}>
                                     <Image style={styles.menuicon}
@@ -187,16 +187,16 @@ export default class Body extends Component {
                                             height: '100%',
                                         }}
                                         >
-                                        <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
-                                        <Text style={{fontSize:15,color:'#FFF'}}> Số phiếu</Text>
-                                        <Text style={{fontSize:35, color:'#FFF',fontWeight:'700'}}> 77</Text>
+                                        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                                        <Text style={{fontSize:15,color:'#FFF'}}>Số phiếu</Text>
+                                        <Text style={{fontSize:30,color:'#FFF'}}>77</Text>
                                         </View>
                                     </View>
                                 </View>
                                 <View style={styles.content}>
                                     <View style={styles.leftcontent}>
-                                        <Text style={{fontSize:22,margin:5,marginBottom:0,color:'black'}}> Đã Thanh Toán</Text>
-                                        <Text style={{fontSize:30,margin:5, color:'#005391',fontWeight:'700'}}> 180.000.000 đ</Text>
+                                        <Text style={{fontSize:20,margin:5,marginBottom:0,color:'black'}}>Đã Thanh Toán</Text>
+                                        <Text style={{fontSize:25,margin:5, color:'#005391'}}>180.000.000 đ</Text>
                                     </View>
                                     <View style={styles.rightcontent}>
                                     <Image style={styles.menuicon}
@@ -225,16 +225,16 @@ export default class Body extends Component {
                                             height: '100%',
                                         }}
                                         >
-                                        <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
-                                        <Text style={{fontSize:15,color:'#FFF'}}> Số phiếu</Text>
-                                        <Text style={{fontSize:35, color:'#FFF',fontWeight:'700'}}> 123</Text>
+                                        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                                        <Text style={{fontSize:15,color:'#FFF'}}>Số phiếu</Text>
+                                        <Text style={{fontSize:30,color:'#FFF'}}>123</Text>
                                         </View>
                                     </View>
                                 </View>
                                 <View style={styles.content}>
                                     <View style={styles.leftcontent}>
-                                        <Text style={{fontSize:22,margin:5,marginBottom:0,color:'black'}}> Chờ Duyệt</Text>
-                                        <Text style={{fontSize:30,margin:5, color:'#005391',fontWeight:'700'}}> 423.000.000 đ</Text>
+                                        <Text style={{fontSize:20,margin:5,marginBottom:0,color:'black'}}>Chờ Duyệt</Text>
+                                        <Text style={{fontSize:25,margin:5, color:'#005391',fontWeight:'700'}}>150.140.000 đ</Text>
                                     </View>
                                     <View style={styles.rightcontent}>
                                     <Image style={styles.menuicon}
@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 10,
     },
     leftcontent:{
-        justifyContent:'center'
+        justifyContent:'center',
     },
     rightcontent:{
         justifyContent:'center',

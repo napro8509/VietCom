@@ -18,13 +18,12 @@ export default class Header extends Component {
         <View>
           <View style={styles.head}>
             <Image style={styles.menuicon}
-              source={require('../../src/icon/forward.png')}
+              source={require('../../src/icon/menu_icon.png')}
               resizeMode='contain'
             />
-
             <View style={styles.mid}>
               <Text style={styles.dashboard}>
-                Trễ Hạn
+                DashBoard
               </Text>
             </View>
             <View>

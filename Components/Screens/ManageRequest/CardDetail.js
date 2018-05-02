@@ -13,7 +13,15 @@ import Header from '../../Header/Header';
 const { height, width } = Dimensions.get('window');
 
 export default class CardDetail extends Component {
-
+    static navigationOptions = {
+        drawerLabel: 'Thông tin chi tiết phiếu',
+        drawerIcon: ({ tintColor }) => (
+          <Image
+            source={require('../../../src/icon/docs.png')}
+            style={[{width:20,height:20}, {tintColor: tintColor}]}
+          />
+        ),
+      };
     render() {
         return (
             <View style={styles.container}>
@@ -359,7 +367,7 @@ const styles = StyleSheet.create({
       },
       leftButton:{
         marginVertical:5,
-        flex:1,
+        flex:1, 
         backgroundColor:'red',
         paddingVertical:15,
         marginRight:5,
