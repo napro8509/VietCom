@@ -10,7 +10,15 @@ import {
 } from 'react-native';
 const { height, width } = Dimensions.get('window');
 const headerBar = height / 5;
+
+
 export default class Header extends Component {
+  constructor(props){
+    super(props);
+    this.state={
+      title:this.props.title
+    }
+  }
 
   render() {
     return (
@@ -23,7 +31,7 @@ export default class Header extends Component {
             />
             <View style={styles.mid}>
               <Text style={styles.dashboard}>
-                DashBoard
+               {this.state.title}
               </Text>
             </View>
             <View>
