@@ -24,17 +24,21 @@ export default class HeaderWait extends Component {
       <View style={{ height: headerBar, paddingHorizontal: 10, backgroundColor: '#005391' }}>
         <View>
           <View style={styles.head}>
-            <Image style={styles.menuicon}
-              source={require('../../src/icon/forward.png')}
+            <Image style={[styles.menuicon]}
+              source={require('../../src/icon/back.png')}
               resizeMode='contain'
             />
 
             <View style={styles.mid}>
               <Text style={styles.dashboard}>
-                Trễ Hạn
+                Chờ Duyệt
               </Text>
             </View>
-            <View>
+            <View style={{flexDirection:'row'}}>
+            <Image style={[styles.menuicon,{marginRight:10}]}
+                source={require('../../src/icon/filter.png')}
+                resizeMode='contain'
+              />
               <Image style={styles.menuicon}
                 source={require('../../src/icon/bell_icon.png')}
                 resizeMode='contain'
@@ -44,7 +48,7 @@ export default class HeaderWait extends Component {
                   position: 'absolute',
                   top: 0,
                   right: 0,
-                  width: '50%',
+                  width: '25%',
                   height: '50%',
                 }}
               >
@@ -147,8 +151,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   menuicon: {
-    width: height / 20,
-    height: height / 20,
+    width: height / 25,
+    height: height / 25,
   },
   mid: {
     justifyContent: 'center',

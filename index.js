@@ -13,4 +13,7 @@ import Test from './Components/Test';
 import DashBoard from './Components/Screens/ManageRequest/DashBoard';
 import Login from './Components/Login/Login';
 import MakeRequest from './Components/Screens/MakeRequest/MakeRequest';
-AppRegistry.registerComponent('VietCom', () => MakeRequest);
+import WaitApprove from './Components/Screens/WaitApprove';
+import Request from './Components/Screens/MakeRequest/Request';
+import MakeContract from './Components/Screens/MakeContract/MakeContract';
+AppRegistry.registerComponent('VietCom', () => MakeContract);
