@@ -9,17 +9,63 @@ import {
     Dimensions,
     TextInput,
     CheckBox,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert
 } from 'react-native';
-
+import {StackNavigator} from 'react-navigation';
+import saveToken from '../../Api/saveToken';
+import { connect } from 'react-redux';
 const {height,weight}=Dimensions.get('window');
 
-export default class Login extends Component{
+    async function getLogInStatus(email,password) {
+        try {
+          let response = await fetch('http://auto.500ae.vn:8089/api/auth/login',{
+            method: 'POST',       
+            headers:{
+                'Content-Type':'application/json',
+                Accept:'application/json',
+                PlatformType:'ADR',
+            },
+            body:JSON.stringify({email,password})
+        });
+          let responseJson = await response.json();
+          return responseJson;
+        } catch(error) {
+          console.error(error);
+        }
+      }
+
+class Login extends Component{
     constructor(props){
         super(props);
         this.state={
-            check:true
+            check:true,
+            userName:'admin@gmail.com',
+            passWord:'admin',
+            status:""
         }
+    }
+    dangnhap(){
+        console.log("Dang Nhap");
+        getLogInStatus(this.state.userName,this.state.passWord).then(res=>{
+            if(res.status=="SUCCESS")
+                {
+                    saveToken(res.data.refeshToken);
+                    console.log(res.data);
+                    this.props.dispatch({type:'LOGIN',profile:res.data})
+                    this.props.navigation.navigate('Hello');
+                }
+                else     Alert.alert(
+                    'Thông báo!',
+                    'Nhập sai tài khoản hoặc mật khẩu!',
+                    [
+                      { text: 'OK'},
+                    ],
+                    { cancelable: false }
+                  )
+                
+
+        })
     }
     render(){
         return(
@@ -40,7 +86,10 @@ export default class Login extends Component{
                         <TextInput style={styles.input}
                         underlineColorAndroid='transparent'
                         placeholder='Nhập Email'
-                        >                          
+                        value={this.state.userName}
+                        onChangeText={(text)=>this.setState({userName:text})}
+                        >                
+                              
                         </TextInput>
                     </View>
                 </View>
@@ -54,7 +103,10 @@ export default class Login extends Component{
                         <TextInput style={styles.input}
                         underlineColorAndroid='transparent'
                         placeholder='Mật khẩu'
-                        >                          
+                        value={this.state.passWord}
+                        onChangeText={(text)=>this.setState({passWord:text})}
+                        >        
+                                       
                         </TextInput>
                     </View>
                 </View>
@@ -70,7 +122,7 @@ export default class Login extends Component{
                     <Text>Quên mật khẩu?</Text>
                 </View>
 
-                <TouchableOpacity>               
+                <TouchableOpacity onPress={this.dangnhap.bind(this)} >         
                     <View style={styles.buttonOK}> 
                     <Text style={styles.buttonName}>Đăng nhập</Text>
                     </View>            
@@ -151,3 +203,8 @@ const styles=StyleSheet.create({
         fontSize:18
     },
 })
+function mapStateToProps(state){
+    return{};
+}
+
+export default connect(mapStateToProps)(Login);

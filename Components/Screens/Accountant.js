@@ -19,6 +19,7 @@ export default class Accountant extends Component {
                 style={[{ height: 20, width: 20 }, { tintColor: tintColor }]}
             />
         ),
+        headerVisible:false
     };
     render() {
         return (

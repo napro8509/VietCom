@@ -12,7 +12,7 @@ import {
     ScrollView
 } from 'react-native';
 import HeaderWait from '../Header/HeaderWait';
-
+import Global from '../../Global/Global';
 const { width, height } = Dimensions.get('window');
 export default class WaitApprove extends Component {
     static navigationOptions = {
@@ -32,12 +32,16 @@ export default class WaitApprove extends Component {
             down: [],
             e: true
         }
+        Global.goBackToDashBoard=this.goBackToDashBoard.bind(this);
     }
     componentDidMount() {
         var a = new Array(this.state.list.length);
         for (var i = 0; i < a.length; ++i) { a[i] = false; }
         this.setState({ down: a })
         console.log(a);
+    }
+    goBackToDashBoard(){
+        this.props.navigation.goBack();
     }
     openDropDown(id) {
         var x = this.state.down;

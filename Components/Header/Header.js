@@ -6,13 +6,16 @@ import {
   Dimensions,
   Image,
   DatePickerAndroid,
-  TouchableOpacticy,
+  TouchableOpacity,
 } from 'react-native';
+import Global from '../../Global/Global';
+import {DrawerActions} from 'react-navigation';
+import { connect } from 'react-redux';
 const { height, width } = Dimensions.get('window');
 const headerBar = height / 5;
 
 
-export default class Header extends Component {
+class Header extends Component {
   constructor(props){
     super(props);
     this.state={
@@ -20,18 +23,25 @@ export default class Header extends Component {
     }
   }
 
+  openDrawerFromHeader(){
+    Global.openDrawer();
+  }
+
+
   render() {
     return (
       <View style={{ height: headerBar/4, paddingHorizontal: 10, backgroundColor: '#005391' }}>
         <View>
           <View style={styles.head}>
+          <TouchableOpacity onPress={this.openDrawerFromHeader.bind(this)}>
             <Image style={styles.menuicon}
               source={require('../../src/icon/menu_icon.png')}
               resizeMode='contain'
             />
+            </TouchableOpacity>
             <View style={styles.mid}>
               <Text style={styles.dashboard}>
-               {this.state.title}
+               {this.state.title} 
               </Text>
             </View>
             <View>
@@ -95,3 +105,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
 });
+
+
+
+export default Header;

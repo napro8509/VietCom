@@ -8,6 +8,7 @@ import {
     ScrollView,
     TouchableOpacity
 } from 'react-native';
+import Global from '../../Global/Global';
 const { height } = Dimensions.get('window');
 export default class Body extends Component {
     render() {
@@ -43,7 +44,7 @@ export default class Body extends Component {
                                         <Text style={{fontSize:25,margin:5, color:'#005391'}}>480.000.000 đ</Text>
                                     </View>
                                     <View style={styles.rightcontent}>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity onPress={()=>Global.goToWaitApprove()}>
                                     <Image style={styles.menuicon}
                                         source={require('../../src/icon/forward.png')}
                                         resizeMode='contain'

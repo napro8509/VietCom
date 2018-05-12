@@ -6,9 +6,10 @@ import {
   Dimensions,
   Image,
   DatePickerAndroid,
-  TouchableOpacticy,
+  TouchableOpacity,
 } from 'react-native';
 import DatePicker from 'react-native-datepicker';
+import Global from '../../Global/Global';
 const { height, width } = Dimensions.get('window');
 const headerBar = height / 5;
 export default class HeaderWait extends Component {
@@ -16,22 +17,26 @@ export default class HeaderWait extends Component {
     super(props)
     this.state = {
       fromDate: "1-2-2017",
-      toDate: "2-2-2017"
+      toDate: "2-2-2017",
+      title:this.props.title
     }
   }
+  
   render() {
     return (
-      <View style={{ height: headerBar, paddingHorizontal: 10, backgroundColor: '#005391' }}>
+      <View style={{ height: height/6, paddingHorizontal: 10, backgroundColor: '#005391' }}>
         <View>
           <View style={styles.head}>
+            <TouchableOpacity onPress={()=>Global.goBackToDashBoard()}>
             <Image style={[styles.menuicon]}
               source={require('../../src/icon/back.png')}
               resizeMode='contain'
             />
+            </TouchableOpacity>
 
             <View style={styles.mid}>
               <Text style={styles.dashboard}>
-                Chờ Duyệt
+                {this.state.title}
               </Text>
             </View>
             <View style={{flexDirection:'row'}}>
@@ -58,7 +63,7 @@ export default class HeaderWait extends Component {
               </View>
             </View>
           </View>
-          <View style={{ borderBottomWidth: 1, height: 1, borderColor: '#DFDFDF', marginVertical: 10 }}>
+          <View style={{ borderBottomWidth: 1, height: 1, borderColor: '#DFDFDF', marginVertical: 2 }}>
           </View>
         </View>
         <View style={styles.formCalendar}>
@@ -95,7 +100,14 @@ export default class HeaderWait extends Component {
               onDateChange={(date) => { this.setState({ fromDate: date }) }}
             />
           </View>
-
+            <View style={{justifyContent:'center'}}>
+            <Text style={styles.text}></Text>
+            <Image
+            style={{height:30,width:30}}
+            source={require('../../src/icon/right_arrow.png')}
+            resizeMode='contain'
+            />
+              </View>
           <View >
             <Text style={styles.text}>Đến ngày</Text>
             <DatePicker
