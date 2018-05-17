@@ -13,7 +13,7 @@ class DrawerComponent extends Component {
     return (
           <View style={{ padding: 10, justifyContent: 'center', alignItems: 'center' }}>
             <Image
-              source={{uri:`${url}${this.props.profile.avatar}`}}
+              source={{uri:this.props.profile.avatar}}
               style={{ width: 100, height: 100, borderRadius: 100, }}
             />
             <TouchableOpacity >

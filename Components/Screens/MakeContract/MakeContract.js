@@ -23,7 +23,8 @@ export default class MakeContract extends Component {
         this.state = {
             type: "",
             fee: "",
-            date: '2-5-2018'
+            date: '2-5-2018',
+            paymentTerms:[{name:'',amount,paymentDate:''}]
         }
     }
     render() {
@@ -89,34 +90,13 @@ export default class MakeContract extends Component {
                                 resizeMode='contain'
                                 style={{ width: 20, height: 20 }}
                             />
-                            <Text style={{ fontSize: 16, color: '#005391' }}>Loại chi phí</Text>
+                            <Text style={{ fontSize: 16, color: '#005391' }}>Kỳ thanh toán và phát sinh chi phí</Text>
                         </View>
 
-                        <View style={{ padding: 10 }}>
-                            <View style={{ marginVertical: 5 }}>
-                                <Picker
-                                    selectedValue={this.state.language}
-                                    style={{ borderTopWidth: 3 }}
-                                    onValueChange={(itemValue, itemIndex) => this.setState({ type: itemValue })}>
-                                    <Picker.Item label="Chọn dự án" value="" />
-                                    <Picker.Item label="Java" value="java" />
-                                    <Picker.Item label="JavaScript" value="js" />
-                                </Picker>
-                            </View>
-                        </View>
-
-                        <View style={styles.contextTitle}>
-                            <Image
-                                source={require('../../../src/icon/docs.png')}
-                                resizeMode='contain'
-                                style={{ width: 20, height: 20 }}
-                            />
-                            <Text style={{ fontSize: 16, color: '#005391' }}>Lịch thanh toán</Text>
-                        </View>
                         <View style={{ padding: 10 }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10 }}>
                                 <View>
-                                    <Text style={{ fontSize: 14 }}>Chọn ngày</Text>
+                                    <Text style={{ fontSize: 14,color:'black' }}>Chọn ngày</Text>
                                     <DatePicker
                                         style={styles.fieldPicker}
                                         date={this.state.date}
@@ -141,22 +121,15 @@ export default class MakeContract extends Component {
                                     />
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 14 }}>Số tiền</Text>
-                                    <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center', justifyContent: 'space-between' }}>
+                                    <Text style={{ fontSize: 14,color:'black' }}>Số tiền</Text>
+                                    <View style={{  marginTop: 5, alignItems: 'center'}}>
                                         <View>
-
                                             <TextInput
                                                 underlineColorAndroid='transparent'
                                                 style={styles.contextInput1}>
 
                                             </TextInput>
                                         </View>
-
-                                        <Image
-                                            source={require('../../../src/icon/add.png')}
-                                            resizeMode='contain'
-                                            style={{ width: 40, height: 40 }}
-                                        />
                                     </View>
 
                                 </View>
@@ -165,6 +138,7 @@ export default class MakeContract extends Component {
                         </View>
                     </View>
 
+                    
                     <View style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
                         <Text style={styles.fieldName}>Diễn giải</Text>
                         <TextInput
@@ -173,6 +147,10 @@ export default class MakeContract extends Component {
                             style={styles.contextInputDienGiai}>
 
                         </TextInput>
+                    </View>
+
+                    <View style={{ paddingHorizontal:10,paddingBottom:10 }}>
+                    <Text style={{ fontSize: 16, color: '#005391' }}>+ Thêm đợt thanh toán</Text>                   
                     </View>
 
                     <View style={styles.totalRequest}>
@@ -238,7 +216,7 @@ const styles = StyleSheet.create({
     },
     fieldName: {
         fontSize: 16,
-        color: '#005391'
+        color: 'black'
     },
     fieldPicker: {
         borderWidth: 3,
