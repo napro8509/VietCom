@@ -40,6 +40,10 @@ import { YellowBox } from 'react-native';
 import Global from '../Global/Global';
 import getToken from '../Api/getToken';
 import DrawerComponent from './Screens/Drawer/DrawerComponent';
+import Request from './Screens/MakeRequest/Request';
+import MakeContract from './Screens/MakeContract/MakeContract';
+import MakeProject from './Screens/MakeProject/MakeProject';
+import AddPaymentTerms from './Screens/MakeProject/AddPaymentTerms';
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 class MyHomeScreen extends React.Component {
@@ -113,10 +117,18 @@ const MyApp = createDrawerNavigator({
       }
     ),
   },
+  Request:{
+    screen:Request
+  },
+  MakeContract:{
+    screen:MakeContract
+  },
   Accountant: {
     screen: Accountant,
   },
-
+  ManageContract:{
+    screen:ManageContract
+  },
   CardEditHistory: {
     screen: CardEditHistory,
   },
@@ -131,7 +143,24 @@ const MyApp = createDrawerNavigator({
   },
   ManageContract: {
     screen: ManageContract
-  }
+  },
+  MakeProjectStack:{
+    screen: createStackNavigator({
+      MakeProject: {
+        screen: MakeProject,
+      },
+      AddPaymentTerms: {
+        screen: AddPaymentTerms
+      }
+    },
+      {
+        headerMode: 'none',
+        navigationOptions: {
+          headerVisible: false,
+        }
+      }
+    ),
+  },
 }, {
   contentComponent:CustomDrawerContentComponent
   });
@@ -151,11 +180,13 @@ const TestLogIn = createStackNavigator({
       headerVisible: false,
     }
   })
-const defaultState={isLogIn:false,profile:{}}
+const defaultState={isLogIn:false,profile:{},token:''}
 function todos(state = defaultState, action) {
   switch (action.type) {
     case 'LOGIN':
-      return {isLogIn:true,profile:action.profile};
+      return {...state,isLogIn:true,profile:action.profile};
+    case 'TOKEN':
+      return {...state,token:action.token};
     default:
       return state;
   }

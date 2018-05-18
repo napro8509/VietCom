@@ -24,7 +24,7 @@ export default class MakeContract extends Component {
             type: "",
             fee: "",
             date: '2-5-2018',
-            paymentTerms:[{name:'',amount,paymentDate:''}]
+            paymentTerms:[{name:'',amount:0,paymentDate:''}]
         }
     }
     render() {

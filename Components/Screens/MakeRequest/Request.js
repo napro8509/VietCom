@@ -18,6 +18,16 @@ import DatePicker from 'react-native-datepicker';
 const { height, weight } = Dimensions.get('window');
 
 export default class MakeRequest extends Component {
+    static navigationOptions = {
+        drawerLabel: 'Tạo phiếu đề nghị',
+        drawerIcon: ({ tintColor }) => (
+            <Image
+                source={require('../../../src/icon/new_request.png')}
+                style={[{ height: 20, width: 20 }]}
+            />
+        ),
+        headerVisible:false
+    };
     constructor(props) {
         super(props);
         this.state = {

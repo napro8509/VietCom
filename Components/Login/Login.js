@@ -51,8 +51,8 @@ class Login extends Component{
             if(res.status=="SUCCESS")
                 {
                     saveToken(res.data.refeshToken);
-                    console.log(res.data);
-                    this.props.dispatch({type:'LOGIN',profile:res.data})
+                    this.props.dispatch({type:'TOKEN',token:res.data.token});
+                    this.props.dispatch({type:'LOGIN',profile:res.data});
                     this.props.navigation.navigate('Hello');
                 }
                 else     Alert.alert(
