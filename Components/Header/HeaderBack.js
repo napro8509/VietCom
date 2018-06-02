@@ -29,7 +29,10 @@ class HeaderBack extends Component {
       <View style={{ height: headerBar/4, paddingHorizontal: 10, backgroundColor: '#005391' }}>
         <View>
           <View style={styles.head}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>{
+            const{goBack}=this.props;
+            goBack();
+          }}>
             <Image style={styles.menuicon}
               source={require('../../src/icon/back.png')}
               resizeMode='contain'

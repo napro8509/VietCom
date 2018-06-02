@@ -64,7 +64,7 @@ class MakeProject extends React.Component {
                 {
                     this.setState({info:res})
                     console.log('Thanh cong');
-                    this.props.navigation.navigate('AddPaymentTerms',{ projectInfo:this.state.info });
+                    this.props.navigation.navigate('AddPaymentTerms',{ projectInfo:this.state.info,make:true });
                 }
         })
     }

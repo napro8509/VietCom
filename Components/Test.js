@@ -23,7 +23,8 @@ import {
   Image,
   Switch,
   Button,
-  ScrollView
+  ScrollView,
+  StatusBar
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { DrawerItems, SafeAreaView, DrawerActions, createDrawerNavigator, createStackNavigator } from 'react-navigation';
@@ -44,6 +45,7 @@ import Request from './Screens/MakeRequest/Request';
 import MakeContract from './Screens/MakeContract/MakeContract';
 import MakeProject from './Screens/MakeProject/MakeProject';
 import AddPaymentTerms from './Screens/MakeProject/AddPaymentTerms';
+import ManageProject from './Screens/MakeProject/ManageProject';
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 class MyHomeScreen extends React.Component {
@@ -91,7 +93,7 @@ class MyNotificationsScreen extends React.Component {
 CustomDrawerContentComponent = (props) => (
   <ScrollView>
     <SafeAreaView style={styles.container} forceInset={{ top: 'always', horizontal: 'never' }}>
-      <DrawerComponent/>
+      <DrawerComponent />
       <DrawerItems {...props} />
     </SafeAreaView>
   </ScrollView>
@@ -117,17 +119,17 @@ const MyApp = createDrawerNavigator({
       }
     ),
   },
-  Request:{
-    screen:Request
+  Request: {
+    screen: Request
   },
-  MakeContract:{
-    screen:MakeContract
+  MakeContract: {
+    screen: MakeContract
   },
   Accountant: {
     screen: Accountant,
   },
-  ManageContract:{
-    screen:ManageContract
+  ManageContract: {
+    screen: ManageContract
   },
   CardEditHistory: {
     screen: CardEditHistory,
@@ -144,8 +146,11 @@ const MyApp = createDrawerNavigator({
   ManageContract: {
     screen: ManageContract
   },
-  MakeProjectStack:{
+  MakeProjectStack: {
     screen: createStackNavigator({
+      ManageProject: {
+        screen: ManageProject
+      },
       MakeProject: {
         screen: MakeProject,
       },
@@ -162,7 +167,7 @@ const MyApp = createDrawerNavigator({
     ),
   },
 }, {
-  contentComponent:CustomDrawerContentComponent
+    contentComponent: CustomDrawerContentComponent
   });
 
 
@@ -180,13 +185,13 @@ const TestLogIn = createStackNavigator({
       headerVisible: false,
     }
   })
-const defaultState={isLogIn:false,profile:{},token:''}
+const defaultState = { isLogIn: false, profile: {}, token: '' }
 function todos(state = defaultState, action) {
   switch (action.type) {
     case 'LOGIN':
-      return {...state,isLogIn:true,profile:action.profile};
+      return { ...state, isLogIn: true, profile: action.profile };
     case 'TOKEN':
-      return {...state,token:action.token};
+      return { ...state, token: action.token };
     default:
       return state;
   }
@@ -215,6 +220,10 @@ class Test extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
+        <StatusBar
+          backgroundColor='#005391'
+          barStyle='light-content'
+        />
         <TestLogIn />
       </View>
     );

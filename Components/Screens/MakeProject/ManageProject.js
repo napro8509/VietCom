@@ -14,19 +14,41 @@ import {
     ScrollView
 } from 'react-native';
 import HeaderManageProject from '../../Header/HeaderManageProject';
-
+import { connect } from 'react-redux';
+import {showList} from '../../../Api/contractApi';
 const {width,height} =Dimensions.get('window');
-export default class MakeProject extends React.Component {
+
+
+
+class ManageProject extends React.Component {
+    constructor(props){
+        super(props);
+        this.state={
+            list:[]
+        }
+    }
+    componentDidMount(){
+        showList(this.props.token).then(res=>this.setState({list:res.data.dataList}))
+    }
     render() {
         return (
             <View style={styles.container}>
                 <HeaderManageProject />
                 <View style={{flex:1,paddingHorizontal:10}}>
                 <FlatList
-                    data={[1,2,3]}
-                    renderItem={({ item }) =>
+                    data={this.state.list}
+                    renderItem={({ item,index }) =>
                     <View style={{paddingVertical:10,flexDirection:'row',justifyContent:'space-between',alignItems:'center',borderBottomWidth:1,borderBottomColor:'#DFDFDF'}}>
-                        <Text style={{fontSize:16,color:'#005391',fontWeight:'bold'}}>Du an 1</Text>
+                        
+                        <TouchableOpacity onPress={()=>
+                            {
+                                console.log('Tesinghgggggggggggggggggggggggg');
+                                this.props.navigation.navigate('AddPaymentTerms',{ project:this.state.list[index],make:false })
+                                console.log(this.state.list[index])
+                            }}>
+                        
+                        <Text style={{fontSize:16,color:'#005391',fontWeight:'bold'}}>{item.name}</Text>
+                        </TouchableOpacity>
                         <Image
                             style={styles.icon}
                             source={require('../../../src/icon/text_edit.png')}
@@ -51,3 +73,9 @@ const styles = StyleSheet.create({
         height:25
     }
 })
+
+function mapStateToProps(state){
+    return{token:state.todos.token};
+}
+
+export default connect(mapStateToProps)(ManageProject);

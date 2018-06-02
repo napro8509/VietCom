@@ -15,17 +15,31 @@ import {
 } from 'react-native';
 import Header from '../../Header/Header';
 import DatePicker from 'react-native-datepicker';
-const { height, weight } = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
+import { connect } from 'react-redux';
+import { showList } from '../../../Api/contractApi';
+import { changeDateToTimeSpan } from '../../../Global/functions';
 
-export default class MakeContract extends Component {
+
+class MakeContract extends Component {
     constructor(props) {
         super(props);
         this.state = {
             type: "",
             fee: "",
-            date: '2-5-2018',
-            paymentTerms:[{name:'',amount:0,paymentDate:''}]
+            date: '',
+            paymentTerms: [{ name: '', amount: 0, paymentDate: '' }],
+            projectList: []
         }
+    }
+    componentDidMount() {
+        showList(this.props.token).then(res => {
+            if (res.status === "SUCCESS") {
+                this.setState({ projectList: res.data.dataList })
+            }
+            console.log(changeDateToTimeSpan('26-2-2018'))
+        }
+        );
     }
     render() {
         return (
@@ -42,7 +56,20 @@ export default class MakeContract extends Component {
                             <Text style={{ fontSize: 16, color: '#005391' }}>Thông tin hợp đồng</Text>
                         </View>
                         <View style={{ padding: 10 }}>
-
+                            <Picker
+                                itemStyle={{borderBottomWidth:1}}
+                                selectedValue={this.state.type}
+                                style={{ alignItems: 'center', justifyContent: 'center' }}
+                                onValueChange={(itemValue, itemIndex) => this.setState({ type: itemValue })}>
+                                <Picker.Item label="Chọn dự án" value="" />
+                                {this.state.projectList.map((data, i) => {
+                                    return (
+                                        <Picker.Item key={data.id} label={data.name} value={data.id} />
+                                    )
+                                    
+                                })}
+                                
+                            </Picker>
                             <TextInput
                                 underlineColorAndroid='transparent'
                                 multiline={true}
@@ -50,6 +77,36 @@ export default class MakeContract extends Component {
                                 style={styles.contextInput}>
 
                             </TextInput>
+
+                             <DatePicker
+                                        style={{                                               height: height / 14,
+                                        width:width-20,justifyContent:'center',
+                                        borderWidth: 1,
+                                        borderColor: '#DFDFDF',
+                                        borderRadius: 5,                                            
+                                        }}
+                                        date={this.state.date}
+                                        mode="date"
+                                        placeholder="select date"
+                                        format="DD-MM-YYYY"
+                                        confirmBtnText="Confirm"
+                                        cancelBtnText="Cancel"
+                                        showIcon={false}
+                                        customStyles={{
+                                            dateInput: {  
+                                                height: height / 14,
+                                                width:width-20,
+                                                borderWidth:0,
+                                                textAlign: 'center',
+                                                marginVertical: 5,
+                                                
+                                            }
+                                                
+                                            
+                                            // ... You can check the source to find the other keys.
+                                        }}
+                                        onDateChange={(date) => { this.setState({ date: date }) }}
+                                    />
 
                             <TextInput
                                 underlineColorAndroid='transparent'
@@ -96,7 +153,7 @@ export default class MakeContract extends Component {
                         <View style={{ padding: 10 }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10 }}>
                                 <View>
-                                    <Text style={{ fontSize: 14,color:'black' }}>Chọn ngày</Text>
+                                    <Text style={{ fontSize: 14, color: 'black' }}>Chọn ngày</Text>
                                     <DatePicker
                                         style={styles.fieldPicker}
                                         date={this.state.date}
@@ -121,8 +178,8 @@ export default class MakeContract extends Component {
                                     />
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 14,color:'black' }}>Số tiền</Text>
-                                    <View style={{  marginTop: 5, alignItems: 'center'}}>
+                                    <Text style={{ fontSize: 14, color: 'black' }}>Số tiền</Text>
+                                    <View style={{ marginTop: 5, alignItems: 'center' }}>
                                         <View>
                                             <TextInput
                                                 underlineColorAndroid='transparent'
@@ -138,7 +195,7 @@ export default class MakeContract extends Component {
                         </View>
                     </View>
 
-                    
+
                     <View style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
                         <Text style={styles.fieldName}>Diễn giải</Text>
                         <TextInput
@@ -149,8 +206,8 @@ export default class MakeContract extends Component {
                         </TextInput>
                     </View>
 
-                    <View style={{ paddingHorizontal:10,paddingBottom:10 }}>
-                    <Text style={{ fontSize: 16, color: '#005391' }}>+ Thêm đợt thanh toán</Text>                   
+                    <View style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
+                        <Text style={{ fontSize: 16, color: '#005391' }}>+ Thêm đợt thanh toán</Text>
                     </View>
 
                     <View style={styles.totalRequest}>
@@ -295,3 +352,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     }
 });
+function mapStateToProps(state) {
+    return { token: state.todos.token };
+}
+
+export default connect(mapStateToProps)(MakeContract);
