@@ -41,6 +41,14 @@ class MakeContract extends Component {
         }
         );
     }
+    addPaymentTerm(){
+        console.log('add payment term')
+        let term=this.state.paymentTerms;
+        console.log(term);
+        term=term.concat({ name: '', amount: 0, paymentDate: '' });
+        this.setState({paymentTerms:term});
+        console.log(term);
+    }
     render() {
         return (
             <View style={styles.container}>
@@ -97,7 +105,6 @@ class MakeContract extends Component {
                                                 height: height / 14,
                                                 width:width-20,
                                                 borderWidth:0,
-                                                textAlign: 'center',
                                                 marginVertical: 5,
                                                 
                                             }
@@ -150,53 +157,56 @@ class MakeContract extends Component {
                             <Text style={{ fontSize: 16, color: '#005391' }}>Kỳ thanh toán và phát sinh chi phí</Text>
                         </View>
 
-                        <View style={{ padding: 10 }}>
+                        <FlatList
+                            data={this.state.paymentTerms}
+                            renderItem={({ item }) =>
+                                <View >
+                                    <View style={{ padding: 10 }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10 }}>
                                 <View>
                                     <Text style={{ fontSize: 14, color: 'black' }}>Chọn ngày</Text>
                                     <DatePicker
-                                        style={styles.fieldPicker}
+                                        style={{                                               height: height / 14,
+                                        width:width-20,justifyContent:'center',
+                                        borderWidth: 1,
+                                        borderColor: '#DFDFDF',
+                                        borderRadius: 5,                                            
+                                        }}
                                         date={this.state.date}
                                         mode="date"
                                         placeholder="select date"
                                         format="DD-MM-YYYY"
                                         confirmBtnText="Confirm"
                                         cancelBtnText="Cancel"
+                                        showIcon={false}
                                         customStyles={{
-                                            dateIcon: {
-                                                position: 'absolute',
-                                                left: 0,
-                                                top: 4,
-                                                marginLeft: 0
-                                            },
-                                            dateInput: {
-                                                marginLeft: 36
+                                            dateInput: {  
+                                                height: height / 14,
+                                                width:width-20,
+                                                borderWidth:0,
+                                                marginVertical: 5,
+                                                
                                             }
+                                                
+                                            
                                             // ... You can check the source to find the other keys.
                                         }}
                                         onDateChange={(date) => { this.setState({ date: date }) }}
                                     />
-                                </View>
-                                <View>
-                                    <Text style={{ fontSize: 14, color: 'black' }}>Số tiền</Text>
-                                    <View style={{ marginTop: 5, alignItems: 'center' }}>
-                                        <View>
-                                            <TextInput
-                                                underlineColorAndroid='transparent'
-                                                style={styles.contextInput1}>
-
-                                            </TextInput>
-                                        </View>
-                                    </View>
 
                                 </View>
 
                             </View>
+                            <Text style={{ fontSize: 14, color: 'black' }}>Nhập số tiền</Text>
+                            <TextInput
+                                underlineColorAndroid='transparent'
+                                multiline={true}
+                                placeholder='Số tiền'
+                                style={styles.contextInput}>
+
+                            </TextInput>
                         </View>
-                    </View>
-
-
-                    <View style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
+                        <View style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
                         <Text style={styles.fieldName}>Diễn giải</Text>
                         <TextInput
                             underlineColorAndroid='transparent'
@@ -205,10 +215,24 @@ class MakeContract extends Component {
 
                         </TextInput>
                     </View>
+                                </View>
+                            }
+                            keyExtractor={(item, index) => item.id}
+                        />
+                        
+                    </View>
 
+
+
+                    <TouchableOpacity onPress={()=>{
+                        this.addPaymentTerm();
+                        
+                    }}>
                     <View style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
+                        
                         <Text style={{ fontSize: 16, color: '#005391' }}>+ Thêm đợt thanh toán</Text>
                     </View>
+                    </TouchableOpacity>
 
                     <View style={styles.totalRequest}>
                         <Text style={{ fontSize: 16, color: '#FFF' }}>Tổng Tiền Thanh Toán</Text>
