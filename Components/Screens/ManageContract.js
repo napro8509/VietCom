@@ -9,12 +9,14 @@ import {
     Image,
     Dimensions,
     TouchableOpacity,
-    ScrollView
+    ScrollView,
+    ToastAndroid
 } from 'react-native';
 import HeaderWait from '../Header/HeaderWait';
-
+import {showListContract} from '../../Api/contractApi';
+import {connect} from  'react-redux';
 const { width, height } = Dimensions.get('window');
-export default class ManageContract extends Component {
+class ManageContract extends Component {
     static navigationOptions = {
         drawerLabel: 'Quản lý hợp đồng',
         drawerIcon: ({ tintColor }) => (
@@ -27,19 +29,19 @@ export default class ManageContract extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            list: [{ id: '1', index: 0 }, { id: '2', index: 1 }, { id: '3', index: 2 }, { id: '4', index: 3 }],
+            contractList: [{ id: '1', index: 0 }, { id: '2', index: 1 }, { id: '3', index: 2 }, { id: '4', index: 3 }],
+            contractData:{}
         }
     }
     componentDidMount() {
-        var a = new Array(this.state.list.length);
-        for (var i = 0; i < a.length; ++i) { a[i] = false; }
-        this.setState({ down: a })
-        console.log(a);
-    }
-    openDropDown(id) {
-        var x = this.state.down;
-        x[id] = true;
-        this.setState({ down: x });
+        showListContract(this.props.token).then(res=> {
+            if(res.status=='SUCCESS')
+            {   
+                this.setState({contractList:res.data.dataList,contractData:res.data})
+            }
+            else
+            ToastAndroid.show('Error when load data', ToastAndroid.SHORT);
+        });
     }
     render() {
         return (
@@ -54,10 +56,10 @@ export default class ManageContract extends Component {
                 <View style={styles.body}>
                     <View style={styles.cartInfo}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text>Số hợp đồng: </Text><Text style={{ color: '#005391', fontSize: 17 }}>23</Text>
+                            <Text>Số hợp đồng: </Text><Text style={{ color: '#005391', fontSize: 17 }}>{this.state.contractData.totalElement}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text>Số tiền: </Text><Text style={{ color: '#005391', fontSize: 17 }}>15.000.000 đ</Text>
+                            <Text>Số tiền: </Text><Text style={{ color: '#005391', fontSize: 17 }}>{this.state.contractData.totalAmount} đ</Text>
                         </View>
                     </View>
                     <ScrollView>
@@ -74,19 +76,19 @@ export default class ManageContract extends Component {
                         <View>
 
                             {
-                                this.state.list.map((data, i) => {
+                                this.state.contractList.map((data, index) => {
                                     return (
                                         <View key={data.id}>
                                             <View style={{ flexDirection: 'row', height: 40, borderBottomWidth: 1, borderBottomColor: '#DFDFDF', paddingHorizontal: 10 }}>
                                                 <View style={{ flex: 2, justifyContent: 'center' }}>
-                                                    <Text style={{ color: 'black', fontWeight: 'bold' }}>DA2-CT-032</Text>
+                                                    <Text style={{ color: 'black', fontWeight: 'bold' }}>{data.contractCode}</Text>
                                                 </View>
 
 
                                                 <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                    <Text style={{ color: 'black', fontWeight: 'bold' }}>10.000.000đ</Text>
+                                                    <Text style={{ color: 'black', fontWeight: 'bold' }}>{data.totalAmount} dd</Text>
                                                     <TouchableOpacity onPress={() => {
-
+                                                        this.props.navigation.navigate('ContractDetail',{contractId:data.id});
                                                     }}>
                                                         <Image
                                                             source={require('../../src/icon/forward.png')}
@@ -150,3 +152,9 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     }
 })
+
+function mapStateToProps(state){
+    return{token:state.todos.token};
+}
+
+export default connect(mapStateToProps)(ManageContract);

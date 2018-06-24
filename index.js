@@ -28,4 +28,5 @@ import MakeProject from './Components/Screens/MakeProject/MakeProject';
 import ManageProject from './Components/Screens/MakeProject/ManageProject';
 import MakeCost from './Components/Screens/MakeCost/MakeCost';
 import AddPaymentTerms from './Components/Screens/MakeProject/AddPaymentTerms';
-AppRegistry.registerComponent('VietCom', () => Test);
+import TestApi from './Components/TestApi';
+AppRegistry.registerComponent('VietCom', () => TestApi);

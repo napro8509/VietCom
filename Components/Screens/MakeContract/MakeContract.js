@@ -17,7 +17,7 @@ import Header from '../../Header/Header';
 import DatePicker from 'react-native-datepicker';
 const { height, width } = Dimensions.get('window');
 import { connect } from 'react-redux';
-import { showList } from '../../../Api/contractApi';
+import { showList,createContract } from '../../../Api/contractApi';
 import { changeDateToTimeSpan } from '../../../Global/functions';
 
 
@@ -25,11 +25,17 @@ class MakeContract extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            type: "",
-            fee: "",
-            date: '',
-            paymentTerms: [{ name: '', amount: 0, paymentDate: '' }],
-            projectList: []
+            projectId: "",
+            contractCode: "qq",
+            name: "www",
+            dateSign: 0,
+            customerName: "rr",
+            bankAccountNumber: "123456789",
+            bankName: "acb",
+            email: "legiona@gmail.com",
+            paymentTerm: [{ name: 'hh', amount: 0, paymentDate: 0 }],
+            projectList: [],
+            date:''
         }
     }
     componentDidMount() {
@@ -41,15 +47,16 @@ class MakeContract extends Component {
         }
         );
     }
-    addPaymentTerm(){
+    addPaymentTerm() {
         console.log('add payment term')
-        let term=this.state.paymentTerms;
+        let term = this.state.paymentTerm;
         console.log(term);
-        term=term.concat({ name: '', amount: 0, paymentDate: '' });
-        this.setState({paymentTerms:term});
+        term = term.concat({ name: '', amount: 0, paymentDate: 0 });
+        this.setState({ paymentTerm: term });
         console.log(term);
     }
     render() {
+        const {projectId,contractCode,name,dateSign,customerName,bankAccountNumber,bankName,email,paymentTerm,projectList,date}=this.state;
         return (
             <View style={styles.container}>
                 <Header />
@@ -65,69 +72,84 @@ class MakeContract extends Component {
                         </View>
                         <View style={{ padding: 10 }}>
                             <Picker
-                                itemStyle={{borderBottomWidth:1}}
-                                selectedValue={this.state.type}
+                                itemStyle={{ borderBottomWidth: 1, textAlign: 'center' }}
+                                selectedValue={projectId}
                                 style={{ alignItems: 'center', justifyContent: 'center' }}
-                                onValueChange={(itemValue, itemIndex) => this.setState({ type: itemValue })}>
+                                onValueChange={(itemValue, itemIndex) => this.setState({ projectId: itemValue })}>
                                 <Picker.Item label="Chọn dự án" value="" />
-                                {this.state.projectList.map((data, i) => {
+                                {projectList.map((data, i) => {
                                     return (
                                         <Picker.Item key={data.id} label={data.name} value={data.id} />
                                     )
-                                    
+
                                 })}
-                                
+
                             </Picker>
                             <TextInput
                                 underlineColorAndroid='transparent'
                                 multiline={true}
                                 placeholder='Số hợp đồng'
-                                style={styles.contextInput}>
+                                style={styles.contextInput}
+                                onChangeText={(text) => this.setState({ contractCode: text })}
+                            >
 
                             </TextInput>
-
-                             <DatePicker
-                                        style={{                                               height: height / 14,
-                                        width:width-20,justifyContent:'center',
-                                        borderWidth: 1,
-                                        borderColor: '#DFDFDF',
-                                        borderRadius: 5,                                            
-                                        }}
-                                        date={this.state.date}
-                                        mode="date"
-                                        placeholder="select date"
-                                        format="DD-MM-YYYY"
-                                        confirmBtnText="Confirm"
-                                        cancelBtnText="Cancel"
-                                        showIcon={false}
-                                        customStyles={{
-                                            dateInput: {  
-                                                height: height / 14,
-                                                width:width-20,
-                                                borderWidth:0,
-                                                marginVertical: 5,
-                                                
-                                            }
-                                                
-                                            
-                                            // ... You can check the source to find the other keys.
-                                        }}
-                                        onDateChange={(date) => { this.setState({ date: date }) }}
-                                    />
 
                             <TextInput
                                 underlineColorAndroid='transparent'
                                 multiline={true}
-                                placeholder='Ngày kí'
-                                style={styles.contextInput}>
+                                placeholder='Tên Hợp Đồng'
+                                style={styles.contextInput}
+                                onChangeText={(text) => this.setState({ name: text })}
+                            >
 
                             </TextInput>
+
+                            <DatePicker
+                                style={{
+                                    height: height / 14,
+                                    width: width - 20, justifyContent: 'center',
+                                    borderWidth: 1,
+                                    borderColor: '#DFDFDF',
+                                    borderRadius: 5,
+                                }}
+                                date={date}
+                                mode="date"
+                                placeholder="select date"
+                                format="DD-MM-YYYY"
+                                confirmBtnText="Confirm"
+                                cancelBtnText="Cancel"
+                                showIcon={false}
+                                customStyles={{
+                                    dateInput: {
+                                        height: height / 14,
+                                        width: width - 20,
+                                        borderWidth: 0,
+                                        marginVertical: 5,
+                                    },
+                                    placeholderText: {
+                                        color: 'red'
+                                    }
+
+
+                                    // ... You can check the source to find the other keys.
+                                }}
+                                onDateChange={(date) => {
+                                    let timeSpan = changeDateToTimeSpan(date)
+                                    this.setState({ dateSign: timeSpan })
+                                    this.setState({date})
+                                }}
+                            />
 
                             <TextInput
                                 underlineColorAndroid='transparent'
                                 multiline={true}
                                 placeholder='Khách hàng'
-                                style={styles.contextInput}>
+                                style={styles.contextInput}
+                                onChangeText={(text) => {
+                                    this.setState({ customerName: text })
+                                }}
+                            >
 
                             </TextInput>
 
@@ -135,7 +157,9 @@ class MakeContract extends Component {
                                 underlineColorAndroid='transparent'
                                 multiline={true}
                                 placeholder='Số tài khoản'
-                                style={styles.contextInput}>
+                                style={styles.contextInput}
+                                onChangeText={(text) => { this.setState({ bankAccountNumber: text }) }}
+                            >
 
                             </TextInput>
 
@@ -143,7 +167,19 @@ class MakeContract extends Component {
                                 underlineColorAndroid='transparent'
                                 multiline={true}
                                 placeholder='Thông tin ngân hàng'
-                                style={styles.contextInput}>
+                                style={styles.contextInput}
+                                onChangeText={(text) => { this.setState({ bankName: text }) }}
+                            >
+
+                            </TextInput>
+
+                            <TextInput
+                                underlineColorAndroid='transparent'
+                                multiline={true}
+                                placeholder='Email'
+                                style={styles.contextInput}
+                                onChangeText={(text) => { this.setState({ email: text }) }}
+                            >
 
                             </TextInput>
                         </View>
@@ -158,80 +194,107 @@ class MakeContract extends Component {
                         </View>
 
                         <FlatList
-                            data={this.state.paymentTerms}
-                            renderItem={({ item }) =>
-                                <View >
+                            data={paymentTerm}
+                            renderItem={({ item, index }) =>
+                                <View style={{ marginVertical: 10, backgroundColor: 'yellow' }} >
                                     <View style={{ padding: 10 }}>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10 }}>
-                                <View>
-                                    <Text style={{ fontSize: 14, color: 'black' }}>Chọn ngày</Text>
-                                    <DatePicker
-                                        style={{                                               height: height / 14,
-                                        width:width-20,justifyContent:'center',
-                                        borderWidth: 1,
-                                        borderColor: '#DFDFDF',
-                                        borderRadius: 5,                                            
-                                        }}
-                                        date={this.state.date}
-                                        mode="date"
-                                        placeholder="select date"
-                                        format="DD-MM-YYYY"
-                                        confirmBtnText="Confirm"
-                                        cancelBtnText="Cancel"
-                                        showIcon={false}
-                                        customStyles={{
-                                            dateInput: {  
-                                                height: height / 14,
-                                                width:width-20,
-                                                borderWidth:0,
-                                                marginVertical: 5,
-                                                
-                                            }
-                                                
-                                            
-                                            // ... You can check the source to find the other keys.
-                                        }}
-                                        onDateChange={(date) => { this.setState({ date: date }) }}
-                                    />
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10 }}>
+                                            <View>
+                                                <Text style={{ fontSize: 14, color: 'black' }}>Chọn ngày</Text>
+                                                <DatePicker
+                                                    style={{
+                                                        height: height / 14,
+                                                        width: width - 20, justifyContent: 'center',
+                                                        borderWidth: 1,
+                                                        borderColor: '#DFDFDF',
+                                                        borderRadius: 5,
+                                                    }}
+                                                    date={date}
+                                                    mode="date"
+                                                    placeholder="select date"
+                                                    format="DD-MM-YYYY"
+                                                    confirmBtnText="Confirm"
+                                                    cancelBtnText="Cancel"
+                                                    showIcon={false}
+                                                    customStyles={{
+                                                        dateInput: {
+                                                            height: height / 14,
+                                                            width: width - 20,
+                                                            borderWidth: 0,
+                                                            marginVertical: 5,
+                                                        },
+                                                        placeholderText: {
+                                                            color: 'red'
+                                                        }
+                                                        // ... You can check the source to find the other keys.
+                                                    }}
+                                                    onDateChange={(date) => {
+                                                        let temp = paymentTerm;
+                                                        temp[index].paymentDate = changeDateToTimeSpan(date);
+                                                        console.log(temp);
+                                                        this.setState({ paymentTerm: temp })
+                                                    }}
+                                                />
 
-                                </View>
+                                            </View>
 
-                            </View>
-                            <Text style={{ fontSize: 14, color: 'black' }}>Nhập số tiền</Text>
-                            <TextInput
-                                underlineColorAndroid='transparent'
-                                multiline={true}
-                                placeholder='Số tiền'
-                                style={styles.contextInput}>
+                                        </View>
+                                        <Text style={{ fontSize: 14, color: 'black' }}>Nhập số tiền</Text>
+                                        <TextInput
+                                            underlineColorAndroid='transparent'
+                                            multiline={true}
+                                            placeholder='Số tiền'
+                                            style={styles.contextInput}
+                                            onChangeText={(text) => {
+                                                let temp = paymentTerm;
+                                                temp[index].amount = parseInt(text);
+                                                console.log(temp);
+                                                this.setState({ paymentTerms: temp })
+                                            }}
+                                        >
 
-                            </TextInput>
-                        </View>
-                        <View style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
-                        <Text style={styles.fieldName}>Diễn giải</Text>
-                        <TextInput
-                            underlineColorAndroid='transparent'
-                            multiline={true}
-                            style={styles.contextInputDienGiai}>
+                                        </TextInput>
+                                    </View>
+                                    <View style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
+                                        <Text style={styles.fieldName}>Diễn giải</Text>
+                                        <TextInput
+                                            underlineColorAndroid='transparent'
+                                            multiline={true}
+                                            style={styles.contextInputDienGiai}
+                                            onChangeText={(text) => {
+                                                let temp = paymentTerm;
+                                                temp[index].name = text;
+                                                console.log(temp);
+                                                this.setState({ paymentTerm: temp })
+                                            }}
+                                        >
 
-                        </TextInput>
-                    </View>
+                                        </TextInput>
+                                    </View>
+                                    <TouchableOpacity onPress={() => {
+                                        let tempArr = paymentTerm;
+                                        tempArr.splice(index, 1);
+                                        this.setState({ paymentTerm: tempArr })
+                                    }}>
+                                        <Text>Xóa đợt thanh toán</Text>
+                                    </TouchableOpacity>
                                 </View>
                             }
                             keyExtractor={(item, index) => item.id}
                         />
-                        
+
                     </View>
 
 
 
-                    <TouchableOpacity onPress={()=>{
+                    <TouchableOpacity onPress={() => {
                         this.addPaymentTerm();
-                        
+
                     }}>
-                    <View style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
-                        
-                        <Text style={{ fontSize: 16, color: '#005391' }}>+ Thêm đợt thanh toán</Text>
-                    </View>
+                        <View style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
+
+                            <Text style={{ fontSize: 16, color: '#005391' }}>+ Thêm đợt thanh toán</Text>
+                        </View>
                     </TouchableOpacity>
 
                     <View style={styles.totalRequest}>
@@ -244,10 +307,14 @@ class MakeContract extends Component {
                         <View style={styles.leftButton}>
                             <Text style={{ color: '#FFF', fontSize: 15, fontWeight: 'bold' }}>Tạo mới</Text>
                         </View>
-
-                        <View style={styles.rightButton}>
-                            <Text style={{ color: '#FFF', fontSize: 15, fontWeight: 'bold' }}>Lưu lại</Text>
-                        </View>
+                        <TouchableOpacity onPress={() => {
+                            console.log(this.state);
+                            createContract({projectId,contractCode,name,dateSign,customerName,bankAccountNumber,bankName,email,paymentTerm},this.props.token);
+                        }}>
+                            <View style={styles.rightButton}>
+                                <Text style={{ color: '#FFF', fontSize: 15, fontWeight: 'bold' }}>Lưu lại</Text>
+                            </View>
+                        </TouchableOpacity>
 
                     </View>
                 </ScrollView>

@@ -46,6 +46,7 @@ import MakeContract from './Screens/MakeContract/MakeContract';
 import MakeProject from './Screens/MakeProject/MakeProject';
 import AddPaymentTerms from './Screens/MakeProject/AddPaymentTerms';
 import ManageProject from './Screens/MakeProject/ManageProject';
+import ContractDetail from './Screens/MakeContract/ContractDetail';
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 class MyHomeScreen extends React.Component {
@@ -145,6 +146,9 @@ const MyApp = createDrawerNavigator({
   },
   ManageContract: {
     screen: ManageContract
+  },
+  ContractDetail:{
+    screen: ContractDetail
   },
   MakeProjectStack: {
     screen: createStackNavigator({
