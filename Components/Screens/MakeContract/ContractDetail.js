@@ -15,18 +15,28 @@ import {
 } from 'react-native';
 import Header from '../../Header/Header';
 import DatePicker from 'react-native-datepicker';
+import {getContract} from '../../../Api/contractApi';
+import {connect} from 'react-redux';
+import {changeTimeSpanToLocalDate} from '../../../Global/functions';
 const { height, width } = Dimensions.get('window');
 
-export default class ContractDetail extends Component {
+class ContractDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
             type: "",
             fee: "",
-            date: '2-5-2018'
+            date: '2-5-2018',
+            contractData:{},
+            paymentTermList:[]
         }
     }
+    componentDidMount(){
+        const {contractId}=this.props.navigation.state.params;
+        getContract(contractId,this.props.token).then(res => this.setState({contractData:res.data,paymentTermList:res.data.paymentTerm}));
+    }
     render() {
+        const {contractData}=this.state;
         return (
             <View style={styles.container}>
                 <Header />
@@ -42,10 +52,10 @@ export default class ContractDetail extends Component {
                         </View>
 
                         <View style={{ paddingLeft: 30, paddingVertical: 10, paddingRight: 10 }}>
-                            <Text style={[styles.fieldName,{marginTop:5}]}>Công ty chuyển giao công nghệ sáng tạo</Text>
-                            <Text style={[styles.fieldName,{marginTop:5}]}>Kí ngày 03/03/2018</Text>
-                            <Text style={[styles.fieldName,{marginTop:5}]}>STK 2566156516515</Text>
-                            <Text style={[styles.fieldName,{marginTop:5}]}>Ngân hàng VietComBank chi nhánh kỳ hòa</Text>
+                            <Text style={[styles.fieldName,{marginTop:5}]}>Tên Khách Hàng: {contractData.customerName}</Text>
+                            <Text style={[styles.fieldName,{marginTop:5}]}>Kí ngày {changeTimeSpanToLocalDate(contractData.dateSign)}</Text>
+                            <Text style={[styles.fieldName,{marginTop:5}]}>Số Tài Khoản: {contractData.bankAccountNumber}</Text>
+                            <Text style={[styles.fieldName,{marginTop:5}]}>Ngân hàng {contractData.bankName}</Text>
                         </View>
 
                         <View style={styles.contextTitle}>
@@ -58,14 +68,14 @@ export default class ContractDetail extends Component {
                         </View>
 
                         <FlatList
-                            data={[1, 2, 3, 4]}
+                            data={this.state.paymentTermList}
                             renderItem={({ item }) =>
                                 <View style={{ paddingHorizontal: 10, paddingTop: 5, flexDirection: 'row' }}>
                                     <View
 
                                         style={styles.contextInput}
                                     >
-                                        <Text style={{ color: 'black' }}>  20-12-2018</Text>
+                                        <Text style={{ color: 'black' }}>{changeTimeSpanToLocalDate(item.paymentDate)}</Text>
                                     </View>
                                     <View style={{ flex: 3, flexDirection: 'row', alignItems: 'center' }}>
                                         <View
@@ -74,7 +84,7 @@ export default class ContractDetail extends Component {
 
 
                                         >
-                                            <Text style={{ color: 'black' }}>  10.000.000đ</Text>
+                                            <Text style={{ color: 'black' }}>  {item.amount}đ</Text>
                                         </View>
                                         <Image
                                             source={require('../../../src/icon/check.png')}
@@ -253,3 +263,9 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     }
 });
+
+function mapStateToProps(state){
+    return {token:state.todos.token};
+}
+
+export default connect(mapStateToProps)(ContractDetail);

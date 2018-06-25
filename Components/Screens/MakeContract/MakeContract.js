@@ -26,8 +26,8 @@ class MakeContract extends Component {
         super(props);
         this.state = {
             projectId: "",
-            contractCode: "qq",
-            name: "www",
+            contractCode: "Du an tien ty",
+            name: "nguyen trung nghia",
             dateSign: 0,
             customerName: "rr",
             bankAccountNumber: "123456789",

@@ -29,7 +29,7 @@ class ManageContract extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            contractList: [{ id: '1', index: 0 }, { id: '2', index: 1 }, { id: '3', index: 2 }, { id: '4', index: 3 }],
+            contractList: [],
             contractData:{}
         }
     }
@@ -37,7 +37,8 @@ class ManageContract extends Component {
         showListContract(this.props.token).then(res=> {
             if(res.status=='SUCCESS')
             {   
-                this.setState({contractList:res.data.dataList,contractData:res.data})
+                if(res.data.dataList)   
+                    this.setState({contractList:res.data.dataList,contractData:res.data})
             }
             else
             ToastAndroid.show('Error when load data', ToastAndroid.SHORT);
