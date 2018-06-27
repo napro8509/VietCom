@@ -3,8 +3,6 @@ import {
     StyleSheet,
     Text,
     View,
-    FlatList,
-    StatusBar,
     Image,
     Dimensions,
     TextInput,
@@ -12,10 +10,16 @@ import {
     TouchableOpacity,
     Alert
 } from 'react-native';
-import {StackNavigator} from 'react-navigation';
 import saveToken from '../../Api/saveToken';
 import { connect } from 'react-redux';
-const {height,weight}=Dimensions.get('window');
+import {StackActions,NavigationActions} from 'react-navigation';
+const {height}=Dimensions.get('window');
+
+const resetAction = StackActions.reset({
+    index: 0,
+    actions: [NavigationActions.navigate({ routeName: 'Employee' })],
+  });
+
 
     async function getLogInStatus(email,password) {
         try {
@@ -36,6 +40,7 @@ const {height,weight}=Dimensions.get('window');
       }
 
 class Login extends Component{
+    
     constructor(props){
         super(props);
         this.state={
@@ -53,9 +58,26 @@ class Login extends Component{
                     saveToken(res.data.refeshToken);
                     this.props.dispatch({type:'TOKEN',token:res.data.token});
                     this.props.dispatch({type:'LOGIN',profile:res.data});
-                    this.props.navigation.navigate('Hello');
+                    switch(res.data.profile.role)
+                    {
+                        case 'GIAM_DOC':{
+                            this.props.navigation.navigate('Director')
+                            console.log('vao director')
+                            break;
+                        }
+                        case 'ADMIN':{
+                            this.props.navigation.navigate('Admin')
+                            console.log('vao admin')
+                            break;
+                        }
+                        case 'NHAN_VIEN':{
+                            this.props.navigation.dispatch(resetAction);
+                            console.log('vao nhan vien')
+                            break;
+                        }
+                    }
                 }
-                else     Alert.alert(
+                else Alert.alert(
                     'Thông báo!',
                     'Nhập sai tài khoản hoặc mật khẩu!',
                     [
@@ -88,6 +110,8 @@ class Login extends Component{
                         placeholder='Nhập Email'
                         value={this.state.userName}
                         onChangeText={(text)=>this.setState({userName:text})}
+                        returnKeyType='next'
+                        onSubmitEditing={()=>this.refs.txtPassWord.focus()}
                         >                
                               
                         </TextInput>
@@ -105,6 +129,8 @@ class Login extends Component{
                         placeholder='Mật khẩu'
                         value={this.state.passWord}
                         onChangeText={(text)=>this.setState({passWord:text})}
+                        ref={"txtPassWord"}
+                        secureTextEntry
                         >        
                                        
                         </TextInput>

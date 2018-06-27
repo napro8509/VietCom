@@ -15,9 +15,18 @@ import {
 } from 'react-native';
 import Header from '../../Header/Header';
 import DatePicker from 'react-native-datepicker';
-const { height, weight } = Dimensions.get('window');
+import { showList } from '../../../Api/contractApi';
+import { showCostTypeList } from '../../../Api/costTypeApi';
+import {createRequest} from '../../../Api/requestApi';
+import { connect } from 'react-redux';
+import { changeDateToTimeSpan } from '../../../Global/functions';
+const { height, width } = Dimensions.get('window');
 
-export default class MakeRequest extends Component {
+const TypeRequest = [{ typeId: 'TAM_UNG', typeName: 'Tạm Ứng' },
+{ typeId: 'THANH_TOAN', typeName: 'Thanh Toán' },
+{ typeId: 'KHAC', typeName: 'Khác' }];
+
+class Request extends Component {
     static navigationOptions = {
         drawerLabel: 'Tạo phiếu đề nghị',
         drawerIcon: ({ tintColor }) => (
@@ -26,82 +35,117 @@ export default class MakeRequest extends Component {
                 style={[{ height: 20, width: 20 }]}
             />
         ),
-        headerVisible:false
+        headerVisible: false
     };
     constructor(props) {
         super(props);
         this.state = {
             type: "",
             fee: "",
-            date: '2-5-2018'
+            date: '',
+            projectList: [],
+            projectId: '',
+            projectTerm: [],
+            projectTermID: '',
+            costTypeList: [],
+            costTypeId: '',
+            description:'',
+            paymentTerm:0,
+            detail:[{description:'',amount:0}]
         }
     }
+    componentDidMount() {
+        showList(this.props.token).then(res => {
+            if (res.status === "SUCCESS") {
+                this.setState({ projectList: res.data.dataList })
+            }
+        }
+        );
+        showCostTypeList(this.props.token).then(res => {
+            if (res.status === 'SUCCESS') {
+                this.setState({ costTypeList: res.data.dataList })
+            }
+        })
+    }
     render() {
+        const { projectId, projectList, projectTerm,projectTermID, costTypeId, costTypeList,type, detail,description,paymentTerm } = this.state;
         return (
             <View style={styles.container}>
                 <Header />
                 <ScrollView>
-                <View style={styles.body}>
-                    <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
-                        <Picker
-                            selectedValue={this.state.language}
-                            style={{ borderTopWidth: 3 }}
-                            onValueChange={(itemValue, itemIndex) => this.setState({ type: itemValue })}>
-                            <Picker.Item label="Chọn loại phiếu" value="" />
-                            <Picker.Item label="Java" value="java" />
-                            <Picker.Item label="JavaScript" value="js" />
-                        </Picker>
-                    </View>
+                    <View style={styles.body}>
+                        <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
+                            <Picker
+                                selectedValue={type}
+                                style={{ borderTopWidth: 3 }}
+                                onValueChange={(itemValue, itemIndex) => this.setState({ type: itemValue })}>
+                                <Picker.Item label="Chọn loại phiếu" value="" />
+                                {TypeRequest.map((data) => {
+                                    return (
+                                        <Picker.Item key={data.typeId} label={data.typeName} value={data.typeId} />
+                                    )
+                                })}
+                            </Picker>
+                        </View>
 
-                    <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
-                        <Picker
-                            selectedValue={this.state.language}
-                            style={{ borderTopWidth: 3 }}
-                            onValueChange={(itemValue, itemIndex) => this.setState({ type: itemValue })}>
-                            <Picker.Item label="Chọn dự án" value="" />
-                            <Picker.Item label="Java" value="java" />
-                            <Picker.Item label="JavaScript" value="js" />
-                        </Picker>
-                    </View>
+                        <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
+                            <Picker
+                                selectedValue={projectId}
+                                onValueChange={(itemValue) => {
+                                    this.setState({ projectId: itemValue });
+                                    for (let i = 0; i < projectList.length; i++)
+                                        if (projectList[i].id == itemValue)
+                                            this.setState({ projectTerm: projectList[i].projectTerms })
+                                }
+                                }>
+                                <Picker.Item label="Chọn dự án" value="" />
+                                {projectList.map((data, i) => {
+                                    return (
+                                        <Picker.Item key={data.id} label={data.name} value={data.id} />
+                                    )
 
-                    <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
-                        <Picker
-                            selectedValue={this.state.language}
-                            style={{ borderTopWidth: 3 }}
-                            onValueChange={(itemValue, itemIndex) => this.setState({ type: itemValue })}>
-                            <Picker.Item label="Chọn hợp đồng" value="" />
-                            <Picker.Item label="Java" value="java" />
-                            <Picker.Item label="JavaScript" value="js" />
-                        </Picker>
-                    </View>
+                                })}
 
-                    <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
-                        <Picker
-                            selectedValue={this.state.language}
-                            style={{ borderTopWidth: 3 }}
-                            onValueChange={(itemValue, itemIndex) => this.setState({ type: itemValue })}>
-                            <Picker.Item label="Chọn loại chi phí" value="" />
-                            <Picker.Item label="Java" value="java" />
-                            <Picker.Item label="JavaScript" value="js" />
-                        </Picker>
-                    </View>
+                            </Picker>
+                        </View>
 
-                    <View style={styles.contextTitle}>
-                        <Image
-                            source={require('../../../src/icon/docs.png')}
-                            resizeMode='contain'
-                            style={{ width: 20, height: 20 }}
-                        />
-                        <Text style={{ fontSize: 16, color: '#005391' }}>Nội dung và số tiền đề nghị</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 10, paddingTop: 10 }}>
-                        <View>
+                        <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
+                            <Picker
+                                selectedValue={projectTermID}
+                                style={{ borderTopWidth: 3 }}
+                                onValueChange={(itemValue, itemIndex) => this.setState({ projectTermID: itemValue })}>
+                                <Picker.Item label="Chọn đợt" value="" />
+                                {projectTerm.map((data, i) => {
+                                    return (
+                                        <Picker.Item key={data.id} label={data.name} value={data.id} />
+                                    )
+
+                                })}
+                            </Picker>
+                        </View>
+
+                        <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
+                            <Picker
+                                selectedValue={costTypeId}
+                                style={{ borderTopWidth: 3 }}
+                                onValueChange={(itemValue, itemIndex) => this.setState({ costTypeId: itemValue })}>
+                                <Picker.Item label="Chọn loại chi phí" value="" />
+                                {costTypeList.map((data, i) => {
+                                    return (
+                                        <Picker.Item key={data.id} label={data.name} value={data.id} />
+                                    )
+
+                                })}
+                            </Picker>
+                        </View>
+
+                        <View style={{ padding: 10 }}>
                             <Text style={styles.fieldName}>Chọn ngày</Text>
                             <DatePicker
                                 style={styles.fieldPicker}
                                 date={this.state.date}
                                 mode="date"
-                                placeholder="select date"
+                                placeholder="Chọn Ngày"
                                 format="DD-MM-YYYY"
                                 confirmBtnText="Confirm"
                                 cancelBtnText="Cancel"
@@ -117,59 +161,118 @@ export default class MakeRequest extends Component {
                                     }
                                     // ... You can check the source to find the other keys.
                                 }}
-                                onDateChange={(date) => { this.setState({ date: date }) }}
+                                onDateChange={(date) => { this.setState({ date: date,paymentTerm:changeDateToTimeSpan(date) }) }}
                             />
                         </View>
-                        <View>
-                            <Text style={styles.fieldName}>Số tiền</Text>
-                            <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center', justifyContent: 'space-between' }}>
-                                <View>
+                        <View style={{ padding: 10 }}>
 
-                                    <TextInput
-                                        underlineColorAndroid='transparent'
-                                        multiline={true}
-                                        style={styles.contextInput}>
+                            <View>
+                                <Text style={styles.fieldName}>Mô Tả Phiếu</Text>
 
-                                    </TextInput>
-                                </View>
 
-                                <Image
-                                    source={require('../../../src/icon/add.png')}
-                                    resizeMode='contain'
-                                    style={{ width: 40, height: 40 }}
-                                />
+
+                                <TextInput
+                                    underlineColorAndroid='transparent'
+                                    multiline={true}
+                                    style={styles.contextInput1}
+                                    onChangeText={(text)=>{
+                                        this.setState({description:text})
+                                    }}
+                                    >
+                                    
+                                </TextInput>
+
+
                             </View>
 
                         </View>
 
-                    </View>
-                    <View style={{ padding: 10, }}>
-                        <Text style={styles.fieldName}>Diễn giải</Text>
-                        <TextInput
-                            underlineColorAndroid='transparent'
-                            multiline={true}
-                            style={styles.contextInput1}>
+                        <View style={styles.contextTitle}>
+                            <Image
+                                source={require('../../../src/icon/docs.png')}
+                                resizeMode='contain'
+                                style={{ width: 20, height: 20 }}
+                            />
+                            <Text style={{ fontSize: 16, color: '#005391' }}>Nội dung và số tiền đề nghị</Text>
+                        </View>
+                        
+                        <FlatList
+                            data={detail}
+                            renderItem={({itemValue,index})=>
+                            <View style={{ padding: 10,borderStyle:'dotted',borderBottomWidth:10 }}>
+                            <View>
+                                <Text style={styles.fieldName}>Số tiền</Text>
+                                <TextInput
+                                    underlineColorAndroid='transparent'
+                                    multiline={true}
+                                    style={styles.contextInput1}
+                                    onChangeText={(text)=>{
+                                        let tempArr=detail;
+                                        tempArr[index].amount=parseInt(text);
+                                        this.setState({detail:tempArr});
+                                    }}
+                                    >
+                                </TextInput>
+                            </View>
+                            <Text style={styles.fieldName}>Diễn giải</Text>
+                            <TextInput
+                                underlineColorAndroid='transparent'
+                                multiline={true}
+                                style={styles.contextInput1}
+                                onChangeText={(text)=>{
+                                    let tempArr=detail;
+                                    tempArr[index].description=text;
+                                    this.setState({detail:tempArr});
+                                }}
+                                >
+                                {detail[index].description}
+                            </TextInput>
+                            <TouchableOpacity onPress={()=>{
+                                let tempArr=detail;
+                                tempArr.splice(index,1);
+                                this.setState({detail:tempArr});
+                            }}>
+                            <Text style={styles.fieldName}>Xóa nội dung này</Text>
+                                </TouchableOpacity>
+                        </View>
+                        }
 
-                        </TextInput>
-                    </View>
-
-                    <View style={styles.totalRequest}>
-                        <Text style={{ fontSize: 16, color: '#FFF' }}>Tổng Cộng</Text>
-                        <Text style={{ fontSize: 18, color: '#FFF', fontWeight: 'bold' }}>66.123.000đ</Text>
-                    </View>
-
-                    <View style={styles.buttonContainer}>
-
-                        <View style={styles.leftButton}>
-                            <Text style={{ color: '#FFF', fontSize: 15, fontWeight: 'bold' }}>Nhập lại</Text>
+                        />
+                        <View style={styles.contextTitle1}>
+                            <Image
+                                source={require('../../../src/icon/add.png')}
+                                resizeMode='contain'
+                                style={{ width: 20, height: 20 }}
+                            />
+                            <TouchableOpacity onPress={()=>{
+                                let tempArr=this.state.detail;
+                                this.setState({detail:tempArr.concat({description:'',amount:0})});
+                                console.log(detail);
+                            }}>
+                                <Text style={{ fontSize: 16, color: '#005391', textDecorationLine: 'underline' }}>Thêm mục mới</Text>
+                            </TouchableOpacity>
                         </View>
 
-                        <View style={styles.rightButton}>
-                            <Text style={{ color: '#FFF', fontSize: 15, fontWeight: 'bold' }}>Tạo phiếu</Text>
+                        <View style={styles.totalRequest}>
+                            <Text style={{ fontSize: 16, color: '#FFF' }}>Tổng Cộng</Text>
+                            <Text style={{ fontSize: 18, color: '#FFF', fontWeight: 'bold' }}>66.123.000đ</Text>
                         </View>
 
+                        <View style={styles.buttonContainer}>
+
+                            <View style={styles.leftButton}>
+                                <Text style={{ color: '#FFF', fontSize: 15, fontWeight: 'bold' }}>Nhập lại</Text>
+                            </View>
+                            <TouchableOpacity
+                            style={styles.rightButton}
+                            onPress={()=>{
+                                createRequest({type,costTypeId,projectId,projectTermID,description,paymentTerm,detail},this.props.token)
+                            }}>
+                                <Text style={{ color: '#FFF', fontSize: 15, fontWeight: 'bold' }}>Tạo phiếu</Text>
+                            </TouchableOpacity>
+
+                        </View>
                     </View>
-                </View>
                 </ScrollView>
 
             </View>
@@ -195,6 +298,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#DFDFDF'
     },
     fieldPicker: {
+        width: width - 20,
+        justifyContent: 'center',
         borderWidth: 3,
         borderColor: '#DFDFDF',
         borderRadius: 5,
@@ -204,10 +309,10 @@ const styles = StyleSheet.create({
     },
     contextInput: {
         height: height / 14,
+        width: width - 20,
         borderWidth: 1,
         borderColor: '#DFDFDF',
         borderRadius: 5,
-        width: 150,
         textAlign: 'center',
         paddingVertical: 5,
         paddingHorizontal: 5,
@@ -218,38 +323,51 @@ const styles = StyleSheet.create({
         height: height / 14,
         borderWidth: 1,
         borderColor: '#DFDFDF',
-        borderRadius: 5
+        borderRadius: 5,
+        paddingLeft: 10
     },
-    totalRequest:{
+    totalRequest: {
         padding: 10,
         backgroundColor: 'green',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'
     },
-    buttonContainer:{
-        flexDirection:'row',
-        paddingHorizontal:10,
-        paddingVertical:15
-      },
-      leftButton:{
-        marginVertical:5,
-        flex:1, 
-        backgroundColor:'red',
-        paddingVertical:15,
-        marginRight:5,
-        borderRadius:10,
-        justifyContent:'center',
-        alignItems:'center'
-      },
-      rightButton:{
-        marginVertical:5,
-        flex:1,
-        backgroundColor:'blue',
-        paddingVertical:15,
-        marginLeft:5,
-        borderRadius:10,
-        justifyContent:'center',
-        alignItems:'center'
-      }
+    buttonContainer: {
+        flexDirection: 'row',
+        paddingHorizontal: 10,
+        paddingVertical: 15
+    },
+    leftButton: {
+        marginVertical: 5,
+        flex: 1,
+        backgroundColor: 'red',
+        paddingVertical: 15,
+        marginRight: 5,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    rightButton: {
+        marginVertical: 5,
+        flex: 1,
+        backgroundColor: 'blue',
+        paddingVertical: 15,
+        marginLeft: 5,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    contextTitle1: {
+        padding: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#DFDFDF'
+    },
 });
+
+function mapStateToProps(state) {
+    return { token: state.todos.token };
+}
+
+export default connect(mapStateToProps)(Request);

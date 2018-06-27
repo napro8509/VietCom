@@ -1,4 +1,3 @@
-
 import {
   createStore,
   applyMiddleware,
@@ -12,17 +11,8 @@ import {
 import { Provider, connect } from 'react-redux';
 import React from 'react';
 import {
-  Platform,
   StyleSheet,
-  Text,
   View,
-  Dimensions,
-  TextInput,
-  Picker,
-  TouchableOpacity,
-  Image,
-  Switch,
-  Button,
   ScrollView,
   StatusBar
 } from 'react-native';
@@ -38,8 +28,6 @@ import WaitApprove from './Screens/WaitApprove';
 import ManageContract from './Screens/ManageContract';
 import Login from './Login/Login';
 import { YellowBox } from 'react-native';
-import Global from '../Global/Global';
-import getToken from '../Api/getToken';
 import DrawerComponent from './Screens/Drawer/DrawerComponent';
 import Request from './Screens/MakeRequest/Request';
 import MakeContract from './Screens/MakeContract/MakeContract';
@@ -47,49 +35,11 @@ import MakeProject from './Screens/MakeProject/MakeProject';
 import AddPaymentTerms from './Screens/MakeProject/AddPaymentTerms';
 import ManageProject from './Screens/MakeProject/ManageProject';
 import ContractDetail from './Screens/MakeContract/ContractDetail';
+import DashBoardDirector from './Screens/User/Director/DashBoardDirector';
+import DashBoardEmployee from './Screens/User/Employee/DashBoardEmployee';
+import WaitApproveEmployee from './Screens/User/Employee/WaitApproveEmployee';
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
-class MyHomeScreen extends React.Component {
-  static navigationOptions = {
-    drawerLabel: 'Home',
-    drawerIcon: ({ tintColor }) => (
-      <Image
-        source={require('../src/icon/back.png')}
-        style={[styles.icon, { tintColor: tintColor }]}
-      />
-    ),
-  };
-
-  render() {
-    return (
-      <Button
-        onPress={() => this.props.navigation.navigate('Notifications')}
-        title="Go to notifications"
-      />
-    );
-  }
-}
-
-class MyNotificationsScreen extends React.Component {
-  static navigationOptions = {
-    drawerLabel: 'Notifications',
-    drawerIcon: ({ tintColor }) => (
-      <Image
-        source={require('../src/icon/back.png')}
-        style={[styles.icon, { tintColor: tintColor }]}
-      />
-    ),
-  };
-
-  render() {
-    return (
-      <Button
-        onPress={() => this.props.navigation.goBack()}
-        title="Go back home"
-      />
-    );
-  }
-}
 
 CustomDrawerContentComponent = (props) => (
   <ScrollView>
@@ -102,15 +52,11 @@ CustomDrawerContentComponent = (props) => (
 CustomDrawerContentComponent.propTypes = {
   navigation: PropTypes.object
 };
-const MyApp = createDrawerNavigator({
+const Admin = createDrawerNavigator({
   DashBoard: {
     screen: createStackNavigator({
-      DashBoard: {
-        screen: DashBoard,
-      },
-      WaitApprove: {
-        screen: WaitApprove
-      }
+      DashBoard: {screen: DashBoard,},
+      WaitApprove: {screen: WaitApprove}
     },
       {
         headerMode: 'none',
@@ -120,68 +66,62 @@ const MyApp = createDrawerNavigator({
       }
     ),
   },
-  Request: {
-    screen: Request
-  },
-  MakeContract: {
-    screen: MakeContract
-  },
-  Accountant: {
-    screen: Accountant,
-  },
-  ManageContract: {
-    screen: ManageContract
-  },
-  CardEditHistory: {
-    screen: CardEditHistory,
-  },
-  CardDetail: {
-    screen: CardDetail,
-  },
-  Filter: {
-    screen: Filter,
-  },
-  Arlam: {
-    screen: Arlam,
-  },
-  ManageContract: {
-    screen: ManageContract
-  },
-  ContractDetail:{
-    screen: ContractDetail
-  },
+  Request:            {screen: Request},
+  MakeContract:       {screen: MakeContract},
+  Accountant:         {screen: Accountant},
+  ManageContract:     {screen: ManageContract},
+  CardEditHistory:    {screen: CardEditHistory,},
+  CardDetail:         {screen: CardDetail,},
+  Filter:             {screen: Filter,},
+  Arlam:              {screen: Arlam,},
+  ManageContract:     {screen: ManageContract},
+  ContractDetail:     {screen: ContractDetail},
   MakeProjectStack: {
-    screen: createStackNavigator({
-      ManageProject: {
-        screen: ManageProject
-      },
-      MakeProject: {
-        screen: MakeProject,
-      },
-      AddPaymentTerms: {
-        screen: AddPaymentTerms
-      }
+  screen: createStackNavigator({
+        ManageProject:    {screen: ManageProject},
+        MakeProject:      {screen: MakeProject,},
+        AddPaymentTerms:  {screen: AddPaymentTerms}
     },
       {
         headerMode: 'none',
-        navigationOptions: {
-          headerVisible: false,
-        }
+        navigationOptions: {headerVisible: false,}
       }
     ),
   },
 }, {
     contentComponent: CustomDrawerContentComponent
+});
+
+const Director=createDrawerNavigator({
+  DashBoardDirector:  {screen:DashBoardDirector},
+  Arlam:              {screen:Arlam}
+},
+  {
+    contentComponent: CustomDrawerContentComponent
   });
 
+const Employee=createDrawerNavigator({
+  DashBoardEmployee:          {screen:createStackNavigator({
+    DashBoardEmployee:        {screen:DashBoardEmployee},
+    WaitApproveEmployee:      {screen:WaitApproveEmployee}
+  },
+  {
+    headerMode: 'none',
+    navigationOptions: {headerVisible: false,}
+  }
+)},
+  Request:            {screen:Request},
+  Arlam:              {screen:Arlam}
+},
+  {
+    contentComponent: CustomDrawerContentComponent
+  });
 
 const TestLogIn = createStackNavigator({
-  Hey: {
-    screen: Login,
-  },
-  Hello: {
-    screen: MyApp,
-  },
+  Login:        {screen: Login,},
+  Admin:        {screen: Admin,},
+  Director:     {screen:Director,},
+  Employee:     {screen:Employee,}
 },
   {
     headerMode: 'none',

@@ -28,12 +28,16 @@ class ContractDetail extends Component {
             fee: "",
             date: '2-5-2018',
             contractData:{},
-            paymentTermList:[]
+            paymentTermList:[],
+            costIncurredList:[]
         }
     }
     componentDidMount(){
         const {contractId}=this.props.navigation.state.params;
-        getContract(contractId,this.props.token).then(res => this.setState({contractData:res.data,paymentTermList:res.data.paymentTerm}));
+        getContract(contractId,this.props.token).then(res => this.setState({contractData:res.data,
+                                                                            paymentTermList:res.data.paymentTerm,
+                                                                            costIncurredList:res.data.costIncurred    
+                                                                        }));
     }
     render() {
         const {contractData}=this.state;
@@ -99,7 +103,7 @@ class ContractDetail extends Component {
 
                         <View style={[styles.totalRequest, { marginTop: 10 }]}>
                             <Text style={{ fontSize: 16, color: '#FFF' }}>Giá trị hợp đồng</Text>
-                            <Text style={{ fontSize: 18, color: '#FFF', fontWeight: 'bold' }}>66.123.000đ</Text>
+                            <Text style={{ fontSize: 18, color: '#FFF', fontWeight: 'bold' }}>{contractData.totalAmount}đ</Text>
                         </View>
 
                         <View style={[styles.contextTitle]}>
@@ -112,14 +116,14 @@ class ContractDetail extends Component {
                         </View>
 
                         <FlatList
-                            data={[1, 2, 3, 4]}
+                            data={this.state.costIncurredList}
                             renderItem={({ item }) =>
                                 <View style={{ paddingHorizontal: 10, paddingTop: 5, flexDirection: 'row' }}>
                                     <View
 
                                         style={styles.contextInput}
                                     >
-                                        <Text style={{ color: 'black' }}>  20-12-2018</Text>
+                                        <Text style={{ color: 'black' }}>  {changeTimeSpanToLocalDate(item.paymentDate)}</Text>
                                     </View>
                                     <View style={{ flex: 3, flexDirection: 'row', alignItems: 'center' }}>
                                         <View
@@ -128,7 +132,7 @@ class ContractDetail extends Component {
 
 
                                         >
-                                            <Text style={{ color: 'black' }}>  10.000.000đ</Text>
+                                            <Text style={{ color: 'black' }}>{item.amount} đ</Text>
                                         </View>
                                         <Image
                                             source={require('../../../src/icon/check.png')}
