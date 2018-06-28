@@ -46,7 +46,7 @@ const styles=StyleSheet.create({
 
 function mapStateToProps(state){
   return{value:state.todos.isLogIn,
-      profile:state.todos.profile.profile
+      profile:state.todos.profile
   };
 }
 

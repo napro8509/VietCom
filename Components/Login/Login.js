@@ -45,8 +45,8 @@ class Login extends Component{
         super(props);
         this.state={
             check:true,
-            userName:'admin@gmail.com',
-            passWord:'admin',
+            userName:'nhanvien@gmail.com',
+            passWord:'nhanvien',
             status:""
         }
     }
@@ -57,7 +57,7 @@ class Login extends Component{
                 {
                     saveToken(res.data.refeshToken);
                     this.props.dispatch({type:'TOKEN',token:res.data.token});
-                    this.props.dispatch({type:'LOGIN',profile:res.data});
+                    this.props.dispatch({type:'LOGIN',profile:res.data.profile});
                     switch(res.data.profile.role)
                     {
                         case 'GIAM_DOC':{

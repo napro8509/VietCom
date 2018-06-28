@@ -77,7 +77,9 @@ class BodyEmployee extends Component {
                                         <Text style={{fontSize:25,margin:5, color:'#005391'}}>{data.TRE_HAN.totalAmount}</Text>
                                     </View>
                                     <View style={styles.rightcontent}>
-                                    <TouchableOpacity onPress={()=>Global.goToWaitApprove()}>
+                                    <TouchableOpacity onPress={()=>{
+                                        this.props.navigation.navigate('WaitApproveEmployee',{type:'TRE_HAN'})
+                                    }}>
                                     <Image style={styles.menuicon}
                                         source={require('../../../../src/icon/forward.png')}
                                         resizeMode='contain'
@@ -118,7 +120,9 @@ class BodyEmployee extends Component {
                                         <Text style={{fontSize:25,margin:5, color:'#005391'}}>{data.DA_DUYET.totalAmount}</Text>
                                     </View>
                                     <View style={styles.rightcontent}>
-                                    <TouchableOpacity onPress={()=>{}}>
+                                    <TouchableOpacity onPress={()=>{
+                                        this.props.navigation.navigate('WaitApproveEmployee',{type:'DA_DUYET'})
+                                    }}>
                                     <Image style={styles.menuicon}
                                         source={require('../../../../src/icon/forward.png')}
                                         resizeMode='contain'
@@ -158,10 +162,14 @@ class BodyEmployee extends Component {
                                         <Text style={{fontSize:25,margin:5, color:'#005391'}}>{data.HUY.totalAmount}</Text>
                                     </View>
                                     <View style={styles.rightcontent}>
+                                    <TouchableOpacity onPress={()=>{
+                                        this.props.navigation.navigate('WaitApproveEmployee',{type:'HUY'})  
+                                    }}>
                                     <Image style={styles.menuicon}
                                         source={require('../../../../src/icon/forward.png')}
                                         resizeMode='contain'
                                         />
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
                             </View>
@@ -198,7 +206,7 @@ class BodyEmployee extends Component {
                                     <View style={styles.rightcontent}>
                                     <TouchableOpacity onPress={()=>{
                                         console.log('hello world')
-                                        this.props.navigation.navigate('WaitApproveEmployee')
+                                        this.props.navigation.navigate('WaitApproveEmployee',{type:'DOI_DUYET'})
                                     }}>
                                     <Image style={styles.menuicon}
                                         source={require('../../../../src/icon/forward.png')}

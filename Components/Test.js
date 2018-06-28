@@ -38,6 +38,7 @@ import ContractDetail from './Screens/MakeContract/ContractDetail';
 import DashBoardDirector from './Screens/User/Director/DashBoardDirector';
 import DashBoardEmployee from './Screens/User/Employee/DashBoardEmployee';
 import WaitApproveEmployee from './Screens/User/Employee/WaitApproveEmployee';
+import UpdateInfoScreen from './Screens/ComonScreen/UpdateInfoScreen';
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 
@@ -103,7 +104,7 @@ const Director=createDrawerNavigator({
 const Employee=createDrawerNavigator({
   DashBoardEmployee:          {screen:createStackNavigator({
     DashBoardEmployee:        {screen:DashBoardEmployee},
-    WaitApproveEmployee:      {screen:WaitApproveEmployee}
+    WaitApproveEmployee:      {screen:WaitApproveEmployee},
   },
   {
     headerMode: 'none',
@@ -111,7 +112,8 @@ const Employee=createDrawerNavigator({
   }
 )},
   Request:            {screen:Request},
-  Arlam:              {screen:Arlam}
+  Arlam:              {screen:Arlam},
+  UpdateInfoScreen:         {screen:UpdateInfoScreen}
 },
   {
     contentComponent: CustomDrawerContentComponent

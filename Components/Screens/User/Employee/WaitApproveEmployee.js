@@ -14,6 +14,7 @@ import {
 import HeaderWaitEmployee from './HeaderWaitEmployee';
 import { connect } from 'react-redux';
 import {showListRequest} from '../../../../Api/requestApi';
+import {changeTimeSpanToLocalDate} from '../../../../Global/functions';
 const { width, height } = Dimensions.get('window');
 
 class WaitApproveEmployee extends Component {
@@ -30,14 +31,13 @@ class WaitApproveEmployee extends Component {
         super(props);
         this.state = {
             data:{},
-            list: [{ id: '1', index: 0 }, { id: '2', index: 1 }, { id: '3', index: 2 }, { id: '4', index: 3 }],
-            open: [{ id: '1', index: 0 }, { id: '2', index: 1 }, { id: '3', index: 2 },],
+            list: [],
             down: [],
             e: true
         }
     }
     componentDidMount() {
-        showListRequest(this.props.token,"DA_DUYET").then(res=>
+        showListRequest(this.props.token,this.props.navigation.state.params.type).then(res=>
             {
                 this.setState({data:res.data})
                 if(res.data.totalElement>0)
@@ -55,6 +55,7 @@ class WaitApproveEmployee extends Component {
         this.setState({ down: x });
     }
     render() {
+        const{data,list,down} =this.state;
         const ImageDown=(
             <Image
                 source={require('../../../../src/icon/drop_down.png')}
@@ -77,10 +78,10 @@ class WaitApproveEmployee extends Component {
                 <View style={styles.body}>
                     <View style={styles.cartInfo}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text>Số phiếu: </Text><Text style={{ color: '#005391', fontSize: 17 }}>23</Text>
+                            <Text>Số phiếu: </Text><Text style={{ color: '#005391', fontSize: 17 }}>{data.totalElement}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text>Tổng tiền: </Text><Text style={{ color: '#005391', fontSize: 17 }}>15.000.000 đ</Text>
+                            <Text>Tổng tiền: </Text><Text style={{ color: '#005391', fontSize: 17 }}>{data.totalAmount} đ</Text>
                         </View>
                     </View>
                     <ScrollView>
@@ -101,65 +102,65 @@ class WaitApproveEmployee extends Component {
                     <View>
 
                             {
-                                this.state.list.map((data, i) => {
+                                list.map((itemCha, i) => {
                                     return (
-                                        <View key={data.id}>
+                                        <View key={itemCha.id}>
                                             <View style={{ flexDirection: 'row', height: 40, borderBottomWidth: 1, borderBottomColor: '#DFDFDF', paddingHorizontal: 10 }}>
                                                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                                                    <Text style={{ color: 'black', fontWeight: 'bold' }}>DA2-CT-032</Text>
+                                                    <Text style={{ color: 'black', fontWeight: 'bold' }}>{itemCha.code}</Text>
                                                 </View>
 
                                                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                                                    <Text style={{ color: 'black', fontWeight: 'bold' }}>15-03-2018</Text>
+                                                    <Text style={{ color: 'black', fontWeight: 'bold' }}>{changeTimeSpanToLocalDate(itemCha.paymentTerm)}</Text>
                                                 </View>
 
                                                 <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                    <Text style={{ color: 'black', fontWeight: 'bold' }}>10.000.000đ</Text>
+                                                    <Text style={{ color: 'black', fontWeight: 'bold' }}>{itemCha.totalAmount}đ</Text>
                                                     <TouchableOpacity onPress={() => {
-                                                        var x=this.state.down;
-                                                        if(this.state.down[i]==true)
+                                                        var x=down;
+                                                        if(down[i]==true)
                                                         x[i]=false;
                                                         else x[i]=true;
                                                         this.setState({down:x});
-                                                        console.log(this.state.down);
+                                                        console.log(down);
 
                                                     }}>
-                                                        {this.state.down[i]?ImageUp:ImageDown}
+                                                        {down[i]?ImageUp:ImageDown}
                                                     </TouchableOpacity>
                                                 </View>
                                             </View>
-                                            <View display={this.state.down[i] ? 'flex' : 'none'}>
+                                            <View display={down[i] ? 'flex' : 'none'}>
                                                 <View
                                                     style={{ padding: 10 }}>
                                                     <Text style={{ color: 'black', fontWeight: 'bold', textAlign: 'center' }}>Phiếu đề nghị:
-                                        <Text>Tạm ứng</Text>
+                                        <Text>  {itemCha.type}</Text>
                                                     </Text>
 
                                                     <Text style={{ color: 'black', fontWeight: 'bold', marginVertical: 5 }}>Dự án:
-                                        <Text>Tôi là ca sĩ</Text>
+                                        <Text>{itemCha.project.name}</Text>
                                                     </Text>
 
-                                                    <Text style={{ color: 'black', fontWeight: 'bold', marginVertical: 5 }}>Hợp đồng:
-                                        <Text>Thuê MC</Text>
+                                                    <Text style={{ color: 'black', fontWeight: 'bold', marginVertical: 5 }}>Loại chi phí:
+                                        <Text>{itemCha.costType.name}</Text>
                                                     </Text>
 
                                                     <Text style={{ color: 'black', fontWeight: 'bold', marginVertical: 5 }}>Nội dung</Text>
                                                     <View style={{ padding: 1 }}>
 
                                                         <FlatList
-                                                            data={this.state.list[0].detail}
+                                                            data={this.state.list[i].detail}
                                                             renderItem={({ item }) =>
-                                                                <View style={{ flexDirection: 'row', height: 40, borderBottomWidth: 1, borderBottomColor: '#DFDFDF', paddingHorizontal: 10, alignItems: 'center', justifyContent: 'space-between' }}>
+                                                                <View key={item.description} style={{ flexDirection: 'row', height: 40, borderBottomWidth: 1, borderBottomColor: '#DFDFDF', paddingHorizontal: 10, alignItems: 'center', justifyContent: 'space-between' }}>
 
-                                                                    <Text style={{ color: 'black', fontWeight: 'bold' }}>CP VP</Text>
+                                                                    <Text style={{ color: 'black', fontWeight: 'bold' }}>{itemCha.project.code}</Text>
 
-                                                                    <Text style={{ color: 'black', fontWeight: 'bold', maxWidth: width / 2, textAlign: 'center' }}>(Mua nước lavie)</Text>
+                                                                    <Text style={{ color: 'black', fontWeight: 'bold', maxWidth: width / 2, textAlign: 'center' }}>{item.description}</Text>
 
-                                                                    <Text style={{ color: 'black', fontWeight: 'bold' }}>10.000.000đ</Text>
+                                                                    <Text style={{ color: 'black', fontWeight: 'bold' }}>{item.amount}đ</Text>
 
                                                                 </View>
                                                             }
-                                                            keyExtractor={(item, index) => item.id}
+                                                            keyExtractor={(item, index) => item.description}
                                                         />
                                                     </View>
 

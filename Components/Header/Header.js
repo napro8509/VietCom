@@ -41,7 +41,7 @@ class Header extends Component {
             </TouchableOpacity>
             <View style={styles.mid}>
               <Text style={styles.dashboard}>
-               {this.state.title} 
+               Tạo Phiếu Đề Nghị
               </Text>
             </View>
             <View>
