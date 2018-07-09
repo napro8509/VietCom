@@ -14,7 +14,8 @@ import {
   StyleSheet,
   View,
   ScrollView,
-  StatusBar
+  StatusBar,
+  Platform
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { DrawerItems, SafeAreaView, DrawerActions, createDrawerNavigator, createStackNavigator } from 'react-navigation';
@@ -102,7 +103,7 @@ const Director=createDrawerNavigator({
   });
 
 const Employee=createDrawerNavigator({
-  DashBoardEmployee:          {screen:createStackNavigator({
+    DashBoardEmployee:          {screen:createStackNavigator({
     DashBoardEmployee:        {screen:DashBoardEmployee},
     WaitApproveEmployee:      {screen:WaitApproveEmployee},
   },
@@ -147,7 +148,7 @@ const navReducer = createNavigationReducer(TestLogIn);
 
 const appReducer = combineReducers({
   nav: navReducer,
-  todos
+  todos,
 });
 
 const middleware = createReactNavigationReduxMiddleware(
@@ -165,7 +166,7 @@ const mapStateToProps = (state) => ({
 class Test extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1,marginTop:20 }}>
         <StatusBar
           backgroundColor='#005391'
           barStyle='light-content'

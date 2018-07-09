@@ -173,7 +173,7 @@ const styles=StyleSheet.create({
     dashboard: {
         color: 'white',
         fontSize: 17,
-        fontFamily: 'Avevir',
+        fontFamily: 'Avenir',
         fontWeight: 'bold'
       },
     body:{
